@@ -7,13 +7,13 @@ var { secretbox, randomBytes } = require("tweetnacl");
  */
 function getAuthChallenge(req, res) {
   // get pubkey form req
-  const pubkey = req.query.pubkey || generateKey();
+  const pubkey = req.query.pubkey;
   if (pubkey) {
     // TODO: add nonce, pubkey combo to firestore.
 
     res.json({ nonce: newNonce() });
   } else {
-    res.error("No public key specified");
+    res.send("No public key specified");
   }
 }
 
