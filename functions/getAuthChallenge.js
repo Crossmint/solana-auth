@@ -1,3 +1,5 @@
+var { secretbox, randomBytes } = require("tweetnacl");
+
 /**
  * Fucntion to take a public key from the client and return an auth challenge
  * @param {*} req
@@ -7,10 +9,15 @@ function getAuthChallenge(req, res) {
   // get pubkey form req
   const pubkey = req.query.pubkey;
   if (pubkey) {
-    res.end(`Hello from getAuthChallenge \n The PubKey is: ${pubkey}`);
+    // TODO: add nonce, pubkey combo to firestore.
+
+    res.json({ nonce: newNonce() });
   } else {
-    res.error("No public key specified");
+    res.send("No public key specified");
   }
 }
+
+// TAKEN FROM: https://github.com/dchest/tweetnacl-js/wiki/Examples
+const newNonce = () => randomBytes(secretbox.nonceLength);
 
 module.exports = getAuthChallenge;
