@@ -1,1 +1,1 @@
-# solana-firebase-auth
+# solana-sign-in
