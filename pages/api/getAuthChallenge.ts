@@ -1,11 +1,15 @@
-var { secretbox, randomBytes } = require("tweetnacl");
+import { NextApiRequest, NextApiResponse } from "next";
+import { secretbox, randomBytes } from "tweetnacl";
 
 /**
  * Fucntion to take a public key from the client and return an auth challenge
  * @param {*} req
  * @param {*} res
  */
-function getAuthChallenge(req, res) {
+export default function getAuthChallenge(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   // get pubkey form req
   const pubkey = req.query.pubkey;
   if (pubkey) {
@@ -19,5 +23,3 @@ function getAuthChallenge(req, res) {
 
 // TAKEN FROM: https://github.com/dchest/tweetnacl-js/wiki/Examples
 const newNonce = () => randomBytes(secretbox.nonceLength);
-
-module.exports = getAuthChallenge;
