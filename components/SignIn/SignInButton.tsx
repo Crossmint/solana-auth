@@ -1,5 +1,4 @@
 import { useWallet } from "@solana/wallet-adapter-react";
-import { sign } from "tweetnacl";
 import { useCallback, useState } from "react";
 import { WalletConnectButtons } from "../WalletConnectButtons";
 
@@ -15,22 +14,22 @@ export const SignInWithSolana = () => {
 
       if (!signMessage) throw new Error("Wallet does not support signing");
 
+      // construct the message
+      const domain = "deolate.space";
+      const nonceStr = `|| id=${Object.entries(nonce)}`;
+      const message = "Sign this message to sign into " + domain + nonceStr;
+
       // encode the message
-      const message = new TextEncoder().encode(
-        `Sign this message to sign into desolate.space || id=${Object.entries(
-          nonce
-        )}`
-      );
+      const encodedMsg = new TextEncoder().encode(message);
       // sign with the wallet
-      const signature = await signMessage(message);
-      console.log(signature);
+      const signature = await signMessage(encodedMsg);
 
       // complete the authorization
       fetch(
         "/api/completeauthchallenge?" +
           new URLSearchParams({
             pk: Array.from(publicKey!.toBuffer()).toString(),
-            pl: message.toString(),
+            pl: message,
             pls: Array.from(signature).toString(),
           })
       );
