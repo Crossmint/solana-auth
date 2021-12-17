@@ -5,6 +5,7 @@ import {
 import { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { SignInWithSolana } from "../components/SignIn";
 import { WalletConnectButtons } from "../components/WalletConnectButtons";
 import styles from "../styles/Home.module.css";
 
@@ -18,7 +19,7 @@ const Index: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <WalletConnectButtons />
+        <SignInWithSolana />
       </main>
     </div>
   );

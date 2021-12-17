@@ -14,10 +14,9 @@ export default function getAuthChallenge(
   const pubkey = req.query.pubkey;
   if (pubkey) {
     // TODO: add nonce, pubkey combo to firestore.
-
-    res.json({ nonce: newNonce() });
+    res.status(200).json({ nonce: newNonce() });
   } else {
-    res.send("No public key specified");
+    res.status(403).json("No public key specified");
   }
 }
 
