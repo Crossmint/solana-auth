@@ -23,9 +23,17 @@ export const SignInWithSolana = () => {
       );
       // sign with the wallet
       const signature = await signMessage(message);
-      // Verify that the bytes were signed using the private key that matches the known public key
-      if (!sign.detached.verify(message, signature, publicKey!.toBytes()))
-        throw new Error("Invalid signature!");
+      console.log(signature);
+
+      // complete the authorization
+      fetch(
+        "/api/completeauthchallenge?" +
+          new URLSearchParams({
+            pk: Array.from(publicKey!.toBuffer()).toString(),
+            pl: message.toString(),
+            pls: Array.from(signature).toString(),
+          })
+      );
     } catch (error: any) {
       alert(`Signing failed: ${error?.message}`);
     }
@@ -43,3 +51,5 @@ export const SignInWithSolana = () => {
     </>
   );
 };
+
+const uatsa = (a: Uint8Array) => a.toString().split(",");
