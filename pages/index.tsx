@@ -1,11 +1,6 @@
-import {
-  WalletDisconnectButton,
-  WalletMultiButton,
-} from "@solana/wallet-adapter-react-ui";
 import { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import { WalletConnectButtons } from "../components/WalletConnectButtons";
+import { SignInWithSolana } from "../components/SignIn";
 import styles from "../styles/Home.module.css";
 
 const Index: NextPage = () => {
@@ -18,7 +13,7 @@ const Index: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <WalletConnectButtons />
+        <SignInWithSolana />
       </main>
     </div>
   );
