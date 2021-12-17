@@ -1,13 +1,7 @@
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { sign } from "tweetnacl";
-import { number } from "prop-types";
 import { useCallback, useState } from "react";
 import { WalletConnectButtons } from "../WalletConnectButtons";
-import base58 from "bs58";
-
-type ResponseData = {
-  nonce: Record<number, number>;
-};
 
 export const SignInWithSolana = () => {
   const [signingIn, setSignIn] = useState<boolean>(false);
