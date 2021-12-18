@@ -1,6 +1,8 @@
+import base58 from "bs58";
 import { NextApiRequest, NextApiResponse } from "next";
 import { sign } from "tweetnacl";
 import util from "tweetnacl-util";
+import { getNonce, verifyTTL } from "../../utils/auth";
 
 type AuthResponse = {
   authed: boolean;
@@ -13,23 +15,40 @@ type AuthResponse = {
  * @param {NextApiResponse} res
  * @returns
  */
-export default function completeAuthChallenge(
+export default async function completeAuthChallenge(
   req: NextApiRequest,
   res: NextApiResponse<AuthResponse>
 ) {
   try {
+    // parse the query parameters
     let { pk, pl, pls } = req.query;
     pl = pl.toString();
+    pk = pk.toString();
+
+    // verify the TLL
+    const ttlVerified = verifyTTL(pk);
+    if (!ttlVerified) throw new Error("Nonce is expired");
+
+    // get the nonce from the database
+    let dbNonce = await getNonce(pk);
+    if (!dbNonce) throw new Error("Public Key not in DB");
+
     const { nonce, domain } = parsePayload(pl);
-    // TODO: Get nonce from DB and check against nonce from payload
+
+    // TODO: verify the domain (dynamically)
+
+    // check nonce against nonce in db
+    if (nonce !== dbNonce) throw new Error("Nonce is invalid");
 
     const payload = util.decodeUTF8(pl);
-    const publicKey = qptua(pk);
+    const publicKey = base58.decode(pk);
     const signature = qptua(pls);
 
     // verify that the bytes were signed witht the private key
     if (!sign.detached.verify(payload, signature, publicKey))
       throw new Error("invalid signature");
+
+    // TODO: Create the JWT token with Firebase and send to client
 
     // send the sign in state back to the client
     res.json({ authed: true });

@@ -16,7 +16,7 @@ export const SignInWithSolana = () => {
 
       // construct the message
       const domain = "deolate.space";
-      const nonceStr = `|| id=${Object.entries(nonce)}`;
+      const nonceStr = `|| id=${nonce}`;
       const message = "Sign this message to sign into " + domain + nonceStr;
 
       // encode the message
@@ -28,7 +28,7 @@ export const SignInWithSolana = () => {
       fetch(
         "/api/completeauthchallenge?" +
           new URLSearchParams({
-            pk: Array.from(publicKey!.toBuffer()).toString(),
+            pk: publicKey!.toString(),
             pl: message,
             pls: Array.from(signature).toString(),
           })
