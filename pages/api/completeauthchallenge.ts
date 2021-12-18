@@ -2,10 +2,10 @@ import base58 from "bs58";
 import { NextApiRequest, NextApiResponse } from "next";
 import { sign } from "tweetnacl";
 import util from "tweetnacl-util";
-import { getNonce, verifyTTL } from "../../utils/auth";
+import { checkNonce, generateToken, verifyTTL } from "../../utils/auth";
 
 type AuthResponse = {
-  authed: boolean;
+  token: string | undefined;
   message?: any;
 };
 
@@ -30,7 +30,7 @@ export default async function completeAuthChallenge(
     if (!ttlVerified) throw new Error("Nonce is expired");
 
     // get the nonce from the database
-    let dbNonce = await getNonce(pk);
+    let dbNonce = await checkNonce(pk);
     if (!dbNonce) throw new Error("Public Key not in DB");
 
     const { nonce, domain } = parsePayload(pl);
@@ -49,11 +49,11 @@ export default async function completeAuthChallenge(
       throw new Error("invalid signature");
 
     // TODO: Create the JWT token with Firebase and send to client
-
+    let token = await generateToken(pk);
     // send the sign in state back to the client
-    res.json({ authed: true });
+    res.json({ token });
   } catch (err: any) {
-    res.status(400).json({ authed: false, message: err.toString() });
+    res.status(400).json({ token: undefined, message: err.toString() });
   }
 }
 

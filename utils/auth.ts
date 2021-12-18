@@ -1,16 +1,16 @@
 import { randomBytes, secretbox } from "tweetnacl";
-import db from "./firestore";
+import { db, auth } from "./firebase";
 
 // TAKEN FROM: https://github.com/dchest/tweetnacl-js/wiki/Examples
 const newNonce = () => randomBytes(secretbox.nonceLength);
 
-export const getAuth = async (pk: string) => {
+export const getNonce = async (pk: string) => {
   /**
    * If there is NO nonce, create the user profile with a new nonce
    * if there is a nonce, update it.
    */
 
-  let nonce = await getNonce(pk);
+  let nonce = await checkNonce(pk);
 
   if (!nonce) {
     nonce = await createProfile(pk);
@@ -20,7 +20,7 @@ export const getAuth = async (pk: string) => {
   return nonce;
 };
 
-export const getNonce = async (pk: string) => {
+export const checkNonce = async (pk: string) => {
   const docRef = db.doc(`profiles/${pk}`);
   const doc = await docRef.get();
 
@@ -59,4 +59,8 @@ const updateNonce = async (pk: string) => {
     ttl: +new Date() + 3600000,
   });
   return nonce;
+};
+
+export const generateToken = (pk: string) => {
+  return auth.createCustomToken(pk);
 };
