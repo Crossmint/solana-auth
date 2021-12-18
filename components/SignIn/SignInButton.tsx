@@ -1,10 +1,12 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useCallback, useState } from "react";
 import { WalletConnectButtons } from "../WalletConnectButtons";
+import { getAuth, signInWithCustomToken } from "firebase/auth";
 
 export const SignInWithSolana = () => {
   const [signingIn, setSignIn] = useState<boolean>(false);
   const { publicKey, signMessage } = useWallet();
+  const [authed, setAuthed] = useState<boolean>(false);
 
   const getAuthChallenge = useCallback(async () => {
     try {
@@ -25,30 +27,39 @@ export const SignInWithSolana = () => {
       const signature = await signMessage(encodedMsg);
 
       // complete the authorization
-      fetch(
+      const auth = getAuth();
+
+      let { token } = await fetch(
         "/api/completeauthchallenge?" +
           new URLSearchParams({
             pk: publicKey!.toString(),
             pl: message,
             pls: Array.from(signature).toString(),
           })
-      );
+      ).then((resp) => resp.json());
+
+      if (!token) throw new Error("No token recieved");
+
+      const userCredentials = await signInWithCustomToken(auth, token);
+      const user = userCredentials.user;
+      setAuthed(true);
     } catch (error: any) {
       alert(`Signing failed: ${error?.message}`);
     }
   }, [publicKey, signMessage]);
+
   return (
     <>
-      {signingIn ? (
+      {authed ? (
+        <p> YAY AUTHED</p>
+      ) : signingIn ? (
         <WalletConnectButtons />
       ) : (
         <button onClick={() => setSignIn(true)}>Sign in!</button>
       )}
-      {signingIn && publicKey && (
+      {signingIn && publicKey && !authed && (
         <button onClick={() => getAuthChallenge()}>Complete sign in</button>
       )}
     </>
   );
 };
-
-const uatsa = (a: Uint8Array) => a.toString().split(",");
