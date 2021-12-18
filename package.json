@@ -28,6 +28,7 @@
     "@solana/wallet-adapter-wallets": "^0.13.0",
     "@solana/web3.js": "^1.20.0",
     "bs58": "^4.0.1",
+    "firebase": "^9.6.1",
     "next": "^11.1.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -38,6 +39,7 @@
     "@types/react": "^17.0.24",
     "eslint": "^7.32.0",
     "eslint-config-next": "^11.1.2",
+    "firebase-admin": "^10.0.1",
     "next-transpile-modules": "^8.0.0",
     "shx": "^0.3.3",
     "typescript": "^4.4.4"
