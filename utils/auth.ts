@@ -4,24 +4,24 @@ import { db, auth } from "./firebase";
 // TAKEN FROM: https://github.com/dchest/tweetnacl-js/wiki/Examples
 const newNonce = () => randomBytes(secretbox.nonceLength);
 
-export const getNonce = async (pk: string) => {
+export const getNonce = async (pubkey: string) => {
   /**
    * If there is NO nonce, create the user profile with a new nonce
    * if there is a nonce, update it.
    */
 
-  let nonce = await checkNonce(pk);
+  let nonce = await checkNonce(pubkey);
 
   if (!nonce) {
-    nonce = await createProfile(pk);
+    nonce = await createProfile(pubkey);
   } else {
-    nonce = await updateNonce(pk);
+    nonce = await updateNonce(pubkey);
   }
   return nonce;
 };
 
-export const checkNonce = async (pk: string) => {
-  const docRef = db.doc(`profiles/${pk}`);
+export const checkNonce = async (pubkey: string) => {
+  const docRef = db.doc(`profiles/${pubkey}`);
   const doc = await docRef.get();
 
   if (doc.exists) {
@@ -30,8 +30,8 @@ export const checkNonce = async (pk: string) => {
   return undefined;
 };
 
-export const verifyTTL = async (pk: string) => {
-  const docRef = db.doc(`profiles/${pk}`);
+export const verifyTTL = async (pubkey: string) => {
+  const docRef = db.doc(`profiles/${pubkey}`);
   const doc = await docRef.get();
   const tll = doc.data()?.tll;
   if (tll < +new Date()) {
@@ -40,27 +40,27 @@ export const verifyTTL = async (pk: string) => {
   return true;
 };
 
-const createProfile = async (pk: string) => {
-  const docRef = db.doc(`profiles/${pk}`);
+const createProfile = async (pubkey: string) => {
+  const docRef = db.doc(`profiles/${pubkey}`);
   const nonce = newNonce().toString();
   await docRef.set({
-    pubkey: pk, // redundant
+    pubkey: pubkey, // redundant
     nonce,
-    ttl: +new Date() + 3600000, // now + 1 hour
+    ttl: +new Date() + 300000, // now + 5min
   });
   return nonce;
 };
 
-const updateNonce = async (pk: string) => {
-  const docRef = db.doc(`profiles/${pk}`);
+const updateNonce = async (pubkey: string) => {
+  const docRef = db.doc(`profiles/${pubkey}`);
   const nonce = newNonce().toString();
   await docRef.set({
     nonce,
-    ttl: +new Date() + 3600000,
+    ttl: +new Date() + 300000,
   });
   return nonce;
 };
 
-export const generateToken = (pk: string) => {
-  return auth.createCustomToken(pk);
+export const generateToken = (pubkey: string) => {
+  return auth.createCustomToken(pubkey);
 };
