@@ -1,16 +1,15 @@
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { WalletConnectButtons } from "../WalletConnectButtons";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import { AUTH_DOMAIN, signInMessage } from "../../config";
 import { firebaseClient } from "../../utils/firebaseClient";
 
 export const SignInWithSolana = () => {
-  const [signingIn, setSignIn] = useState<boolean>(false);
   const { publicKey, signMessage } = useWallet();
-  const [authed, setAuthed] = useState<boolean>(false);
+  const [authenticated, setAuthed] = useState<boolean>(false);
 
-  const getAuthChallenge = useCallback(async () => {
+  const authenticate = useCallback(async () => {
     try {
       const { nonce } = await fetch(`/api/getauthchallenge?pubkey=${publicKey}`)
         .then((resp) => resp.json())
@@ -48,18 +47,11 @@ export const SignInWithSolana = () => {
     }
   }, [publicKey, signMessage]);
 
-  return (
-    <>
-      {authed ? (
-        <p> YAY AUTHED</p>
-      ) : signingIn ? (
-        <WalletConnectButtons />
-      ) : (
-        <button onClick={() => setSignIn(true)}>Sign in!</button>
-      )}
-      {signingIn && publicKey && !authed && (
-        <button onClick={() => getAuthChallenge()}>Complete sign in</button>
-      )}
-    </>
-  );
+  useEffect(() => {
+    if (publicKey) {
+      authenticate();
+    }
+  }, [publicKey, authenticate]);
+
+  return <>{!publicKey && <WalletConnectButtons />}</>;
 };
