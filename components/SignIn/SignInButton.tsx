@@ -2,6 +2,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useCallback, useState } from "react";
 import { WalletConnectButtons } from "../WalletConnectButtons";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
+import { AUTH_DOMAIN } from "../../config";
 
 export const SignInWithSolana = () => {
   const [signingIn, setSignIn] = useState<boolean>(false);
@@ -17,9 +18,9 @@ export const SignInWithSolana = () => {
       if (!signMessage) throw new Error("Wallet does not support signing");
 
       // construct the message
-      const domain = "deolate.space";
       const nonceStr = `|| id=${nonce}`;
-      const message = "Sign this message to sign into " + domain + nonceStr;
+      const message =
+        "Sign this message to sign into " + AUTH_DOMAIN + nonceStr;
 
       // encode the message
       const encodedMsg = new TextEncoder().encode(message);
@@ -38,7 +39,7 @@ export const SignInWithSolana = () => {
           })
       ).then((resp) => resp.json());
 
-      if (!token) throw new Error("No token recieved");
+      if (!token) throw new Error("No token received");
 
       const userCredentials = await signInWithCustomToken(auth, token);
       const user = userCredentials.user;
