@@ -54,9 +54,5 @@ export const SignInWithSolana = () => {
     }
   }, [publicKey, authenticate]);
 
-  return (
-    <>
-      {authenticated && <p>Authed!</p>} {!publicKey && <WalletConnectButtons />}
-    </>
-  );
+  return <>{!publicKey && <WalletConnectButtons />}</>;
 };
