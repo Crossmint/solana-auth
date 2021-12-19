@@ -46,7 +46,7 @@ const createProfile = async (pk: string) => {
   await docRef.set({
     pubkey: pk, // redundant
     nonce,
-    ttl: +new Date() + 3600000, // now + 1 hour
+    ttl: +new Date() + 300000, // now + 5min
   });
   return nonce;
 };
@@ -56,7 +56,7 @@ const updateNonce = async (pk: string) => {
   const nonce = newNonce().toString();
   await docRef.set({
     nonce,
-    ttl: +new Date() + 3600000,
+    ttl: +new Date() + 300000,
   });
   return nonce;
 };
