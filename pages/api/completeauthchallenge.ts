@@ -2,6 +2,7 @@ import base58 from "bs58";
 import { NextApiRequest, NextApiResponse } from "next";
 import { sign } from "tweetnacl";
 import util from "tweetnacl-util";
+import { signInMessage } from "../../config";
 import { checkNonce, generateToken, verifyTTL } from "../../utils/auth";
 
 type AuthResponse = {
@@ -34,6 +35,12 @@ export default async function completeAuthChallenge(
     if (!dbNonce) throw new Error("Public Key not in DB");
 
     const { nonce, domain } = parsePayload(pl);
+
+    // verify the payload
+
+    const constructedMessage = signInMessage(nonce);
+
+    if (constructedMessage !== pl) throw new Error("Invalid payload");
 
     // TODO: verify the domain (dynamically)
 
