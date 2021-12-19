@@ -32,7 +32,7 @@ export const SignInWithSolana = () => {
       let { token } = await fetch(
         "/api/completeauthchallenge?" +
           new URLSearchParams({
-            pk: publicKey!.toString(),
+            pubkey: publicKey!.toString(),
             pl: message,
             pls: Array.from(signature).toString(),
           })
