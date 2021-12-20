@@ -1,6 +1,6 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useCallback, useEffect, useState } from "react";
-import { WalletConnectButtons } from "../WalletConnectButtons";
+import { WalletConnectButtons } from "../Wallet/WalletConnectButtons";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import { AUTH_DOMAIN, signInMessage } from "../../config";
 import { firebaseClient } from "../../utils/firebaseClient";
