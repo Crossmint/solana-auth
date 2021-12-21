@@ -12,8 +12,8 @@ import { checkNonce, generateToken, verifyTTL } from "../utils/auth";
 export const completeAuth = async (req: any, res: any) => {
   try {
     // parse the query parameters
-    let { pubkey, pl, pls } = req.query;
-    pl = pl.toString();
+    let { pubkey, payload, signature } = req.query;
+    payload = payload.toString();
     pubkey = pubkey.toString();
 
     // verify the TLL
@@ -24,22 +24,21 @@ export const completeAuth = async (req: any, res: any) => {
     let dbNonce = await checkNonce(pubkey);
     if (!dbNonce) throw new Error("Public Key not in DB");
 
-    const { nonce, domain } = parsePayload(pl);
+    const { nonce, domain } = parsePayload(payload);
 
     // verify the payload
-
     const constructedMessage = signInMessage(nonce, domain);
 
-    if (constructedMessage !== pl) throw new Error("Invalid payload");
+    if (constructedMessage !== payload) throw new Error("Invalid payload");
 
     // TODO: verify the domain (dynamically)
 
     // check nonce against nonce in db
     if (nonce !== dbNonce) throw new Error("Nonce is invalid");
 
-    const payload = util.decodeUTF8(pl);
+    payload = util.decodeUTF8(payload);
     const publicKey = base58.decode(pubkey);
-    const signature = qptua(pls);
+    signature = qptua(signature);
 
     // verify that the bytes were signed witht the private key
     if (!sign.detached.verify(payload, signature, publicKey))

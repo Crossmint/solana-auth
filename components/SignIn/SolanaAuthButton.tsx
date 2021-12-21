@@ -10,9 +10,12 @@ export const SignInWithSolana = () => {
   const { isAuthenticated, authenticate, data, publicKey } = useSolanaSignIn();
   useEffect(() => {
     if (publicKey) {
+      console.log(publicKey);
       authenticate();
     }
   }, [publicKey, authenticate]);
 
-  return <>{!isAuthenticated && <WalletConnectButtons />}</>;
+  return (
+    <>{isAuthenticated ? <p>Authenticated</p> : <WalletConnectButtons />}</>
+  );
 };

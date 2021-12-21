@@ -7,16 +7,6 @@ import { signInMessage } from "../../config";
 import { firebaseClient } from "../../utils/firebaseClient";
 import { SolanaAuthContext, SolanaAuthState } from "./useSolanaSignIn";
 
-const WalletConnectionProvider = dynamic<{ children: ReactNode }>(
-  () =>
-    import("../Wallet/WalletConnectionProvider").then(
-      ({ WalletConnectionProvider }) => WalletConnectionProvider
-    ),
-  {
-    ssr: false,
-  }
-);
-
 export interface SolanaSignInProviderProps {
   requestUrl: string;
   callbackUrl: string;
@@ -69,24 +59,22 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
       const data = await onAuthCallback(callbackData);
       setData(data);
       setAuthed(true);
+      console.log("completed signin!");
     } catch (error: any) {
       alert(`Signing failed: ${error?.message}`);
     }
   }, [callbackUrl, domain, onAuthCallback, publicKey, requestUrl, signMessage]);
 
-  // construct the context
-  let context: SolanaAuthState = {
-    isAuthenticated,
-    authenticate,
-    data,
-    publicKey,
-  };
-
   return (
-    <SolanaAuthContext.Provider value={context}>
-      <WalletConnectionProvider>
-        <WalletModalProvider>{children}</WalletModalProvider>
-      </WalletConnectionProvider>
+    <SolanaAuthContext.Provider
+      value={{
+        isAuthenticated,
+        authenticate,
+        data,
+        publicKey,
+      }}
+    >
+      <WalletModalProvider>{children}</WalletModalProvider>
     </SolanaAuthContext.Provider>
   );
 };
