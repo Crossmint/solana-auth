@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { completeAuth } from "../../functions/completeAuth";
+import { completeSolanaAuth } from "../../functions/completeSolanaAuth";
 
 type AuthResponse = {
   token: string | undefined;
@@ -16,5 +16,5 @@ export default async function completeAuthChallenge(
   req: NextApiRequest,
   res: NextApiResponse<AuthResponse>
 ) {
-  await completeAuth(req, res);
+  await completeSolanaAuth(req, res);
 }

@@ -1,5 +1,5 @@
 import { getNonce, checkNonce } from "../utils/auth";
-export const getAuth = async (req: any, res: any) => {
+export const getSolanaAuth = async (req: any, res: any) => {
   // get pubkey form req
   const pubkey = req.query.pubkey;
   if (pubkey) {

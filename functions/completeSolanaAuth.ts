@@ -9,7 +9,7 @@ import { checkNonce, generateToken, verifyTTL } from "../utils/auth";
  * @param req A request object
  * @param res The response object
  */
-export const completeAuth = async (req: any, res: any) => {
+export const completeSolanaAuth = async (req: any, res: any) => {
   try {
     // parse the query parameters
     let { pubkey, payload, signature } = req.query;

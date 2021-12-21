@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getAuth } from "../../functions/getAuth";
+import { getSolanaAuth } from "../../functions/getSolanaAuth";
 /**
  * Fucntion to take a public key from the client and return an auth challenge
  * @param {*} req
@@ -9,5 +9,5 @@ export default async function getAuthChallenge(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  await getAuth(req, res);
+  await getSolanaAuth(req, res);
 }
