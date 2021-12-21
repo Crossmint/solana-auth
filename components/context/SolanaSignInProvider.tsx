@@ -1,8 +1,9 @@
+import { async } from "@firebase/util";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import dynamic from "next/dynamic";
-import { FC, ReactNode, useCallback, useState } from "react";
+import { FC, ReactNode, useCallback, useEffect, useState } from "react";
 import { signInMessage } from "../../config";
 import { firebaseClient } from "../../utils/firebaseClient";
 import { SolanaAuthContext, SolanaAuthState } from "./useSolanaSignIn";
@@ -13,6 +14,7 @@ export interface SolanaSignInProviderProps {
   domain: string;
   children: ReactNode;
   onAuthCallback(data: Record<string, string>): Promise<any>;
+  signOut(): Promise<void>;
 }
 export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
   children,
@@ -20,11 +22,16 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
   callbackUrl,
   domain,
   onAuthCallback,
+  signOut,
 }) => {
   const { publicKey, signMessage, connect, wallet, ready, connected } =
     useWallet();
   const [isAuthenticated, setAuthed] = useState<boolean>(false);
   const [data, setData] = useState<Record<string, string>>({});
+
+  const check = async () => {
+    return !!(await getAuth().currentUser);
+  };
 
   const authenticate = useCallback(async () => {
     try {
@@ -37,7 +44,6 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
       // TODO: Abstract into user defined message
       // construct the message
       const message = signInMessage(nonce, domain);
-      console.log(`message: ${message}`);
       // encode the message
       const encodedMsg = new TextEncoder().encode(message);
       // sign with the wallet
@@ -66,6 +72,11 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
     }
   }, [callbackUrl, domain, onAuthCallback, publicKey, requestUrl, signMessage]);
 
+  const signout = async () => {
+    await signOut();
+    setAuthed(false);
+  };
+
   return (
     <SolanaAuthContext.Provider
       value={{
@@ -75,6 +86,7 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
         publicKey,
         connect,
         wallet,
+        signout,
       }}
     >
       <WalletModalProvider>{children}</WalletModalProvider>

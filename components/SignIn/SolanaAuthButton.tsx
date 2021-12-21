@@ -2,9 +2,11 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useCallback, useEffect, useState } from "react";
 import { WalletConnectButtons } from "../Wallet/WalletConnectButtons";
 import { useSolanaSignIn } from "../context/useSolanaSignIn";
+import Image from "next/image";
 
 export const SignInWithSolana = () => {
-  const { isAuthenticated, authenticate, wallet, connect } = useSolanaSignIn();
+  const { isAuthenticated, authenticate, wallet, connect, signout } =
+    useSolanaSignIn();
   const { ready, connected } = useWallet();
   const [signingIn, setSigningIn] = useState<boolean>(false);
 
@@ -17,7 +19,7 @@ export const SignInWithSolana = () => {
   }, [authenticate]);
 
   // TODO: These effects could probably be added to signinProvider
-
+  //  or at least they could probably be in the same hook
   useEffect(() => {
     if (ready) connect();
   }, [ready, connect]);
@@ -25,8 +27,6 @@ export const SignInWithSolana = () => {
   useEffect(() => {
     if (connected && signingIn) {
       asyncAuth();
-    } else {
-      console.log("NOT CONNECTED");
     }
   }, [connected, asyncAuth, signingIn]);
 
@@ -47,10 +47,11 @@ export const SignInWithSolana = () => {
       {signingIn ? (
         <SigningInContainer />
       ) : isAuthenticated ? (
-        <p>Logged In!</p>
+        <button onClick={() => signout()}>Sign out!</button>
       ) : (
-        <button onClick={async () => await setSigningIn(true)}>
-          Sign in with Solana
+        <button onClick={() => setSigningIn(true)}>
+          {wallet && <Image width={24} height={24} src={wallet.icon} />}Sign in
+          with Solana
         </button>
       )}
     </>

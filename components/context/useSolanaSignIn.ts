@@ -9,6 +9,7 @@ export interface SolanaAuthState {
   authenticate(): void;
   publicKey: PublicKey | null;
   connect(): Promise<void>;
+  signout(): Promise<void>;
   wallet: Wallet | null;
 }
 

@@ -13,6 +13,10 @@ async function callback(data: Record<string, string>) {
   return userCredential;
 }
 
+const signOut = () => {
+  return auth.signOut();
+};
+
 const WalletConnectionProvider = dynamic<{ children: ReactNode }>(
   () =>
     import("../Wallet/WalletConnectionProvider").then(
@@ -32,6 +36,7 @@ export const SolanaAuthProvider: FC<SolanaAuthProviderProps> = ({
         requestUrl="/api/getauthchallenge"
         callbackUrl="/api/completeauthchallenge"
         onAuthCallback={callback}
+        signOut={signOut}
       >
         {children}
       </SolanaSignInProvider>
