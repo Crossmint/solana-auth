@@ -38,7 +38,7 @@ export default async function completeAuthChallenge(
 
     // verify the payload
 
-    const constructedMessage = signInMessage(nonce);
+    const constructedMessage = signInMessage(nonce, domain);
 
     if (constructedMessage !== pl) throw new Error("Invalid payload");
 
