@@ -1,21 +1,58 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useCallback, useEffect, useState } from "react";
 import { WalletConnectButtons } from "../Wallet/WalletConnectButtons";
-import { getAuth, signInWithCustomToken } from "firebase/auth";
-import { AUTH_DOMAIN, signInMessage } from "../../config";
-import { firebaseClient } from "../../utils/firebaseClient";
 import { useSolanaSignIn } from "../context/useSolanaSignIn";
 
 export const SignInWithSolana = () => {
-  const { isAuthenticated, authenticate, data, publicKey } = useSolanaSignIn();
+  const { isAuthenticated, authenticate, wallet, connect } = useSolanaSignIn();
+  const { ready, connected } = useWallet();
+  const [signingIn, setSigningIn] = useState<boolean>(false);
+
+  let walletNeedsConnecting = !wallet || !ready;
+
+  const asyncAuth = useCallback(async () => {
+    setSigningIn(true);
+    await authenticate();
+    setSigningIn(false);
+  }, [authenticate]);
+
+  // TODO: These effects could probably be added to signinProvider
+
   useEffect(() => {
-    if (publicKey) {
-      console.log(publicKey);
-      authenticate();
+    if (ready) connect();
+  }, [ready, connect]);
+
+  useEffect(() => {
+    if (connected && signingIn) {
+      asyncAuth();
+    } else {
+      console.log("NOT CONNECTED");
     }
-  }, [publicKey, authenticate]);
+  }, [connected, asyncAuth, signingIn]);
+
+  const SigningInContainer = () => {
+    return (
+      <>
+        {walletNeedsConnecting ? (
+          <WalletConnectButtons />
+        ) : (
+          <p>Connecting...</p>
+        )}
+      </>
+    );
+  };
 
   return (
-    <>{isAuthenticated ? <p>Authenticated</p> : <WalletConnectButtons />}</>
+    <>
+      {signingIn ? (
+        <SigningInContainer />
+      ) : isAuthenticated ? (
+        <p>Logged In!</p>
+      ) : (
+        <button onClick={async () => await setSigningIn(true)}>
+          Sign in with Solana
+        </button>
+      )}
+    </>
   );
 };

@@ -1,4 +1,4 @@
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import dynamic from "next/dynamic";
@@ -21,7 +21,8 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
   domain,
   onAuthCallback,
 }) => {
-  const { publicKey, signMessage } = useWallet();
+  const { publicKey, signMessage, connect, wallet, ready, connected } =
+    useWallet();
   const [isAuthenticated, setAuthed] = useState<boolean>(false);
   const [data, setData] = useState<Record<string, string>>({});
 
@@ -36,13 +37,13 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
       // TODO: Abstract into user defined message
       // construct the message
       const message = signInMessage(nonce, domain);
+      console.log(`message: ${message}`);
       // encode the message
       const encodedMsg = new TextEncoder().encode(message);
       // sign with the wallet
       const signature = await signMessage(encodedMsg);
 
       // complete the authorization
-
       let callbackData = await fetch(
         callbackUrl +
           "?" +
@@ -72,6 +73,8 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
         authenticate,
         data,
         publicKey,
+        connect,
+        wallet,
       }}
     >
       <WalletModalProvider>{children}</WalletModalProvider>
