@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { completeSolanaAuth } from "../../functions/completeSolanaAuth";
+import { SolanaFirebaseAuth } from "../../utils/SolanaAuth_Firebase";
 
 type AuthResponse = {
   token: string | undefined;
@@ -16,5 +16,5 @@ export default async function completeAuthChallenge(
   req: NextApiRequest,
   res: NextApiResponse<AuthResponse>
 ) {
-  await completeSolanaAuth(req, res);
+  await SolanaFirebaseAuth.completeSolanaAuth(req, res);
 }

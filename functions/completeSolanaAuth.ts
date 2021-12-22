@@ -9,46 +9,6 @@ import { checkNonce, generateToken, verifyTTL } from "../utils/auth";
  * @param req A request object
  * @param res The response object
  */
-export const completeSolanaAuth = async (req: any, res: any) => {
-  try {
-    // parse the query parameters
-    let { pubkey, payload, signature } = req.query;
-    payload = payload.toString();
-    pubkey = pubkey.toString();
-
-    // verify the TLL
-    const ttlVerified = verifyTTL(pubkey);
-    if (!ttlVerified) throw new Error("Nonce is expired");
-
-    // get the nonce from the database
-    let dbNonce = await checkNonce(pubkey);
-    if (!dbNonce) throw new Error("Public Key not in DB");
-
-    const { nonce, domain } = parsePayload(payload);
-
-    // verify the payload
-    const constructedMessage = signInMessage(nonce, domain);
-
-    if (constructedMessage !== payload) throw new Error("Invalid payload");
-
-    // check nonce against nonce in db
-    if (nonce !== dbNonce) throw new Error("Nonce is invalid");
-
-    payload = util.decodeUTF8(payload);
-    const publicKey = base58.decode(pubkey);
-    signature = qptua(signature);
-
-    // verify that the bytes were signed witht the private key
-    if (!sign.detached.verify(payload, signature, publicKey))
-      throw new Error("invalid signature");
-
-    let token = await generateToken(pubkey);
-    // send the sign in state back to the client
-    res.json({ token });
-  } catch (err: any) {
-    res.status(400).json({ token: undefined, message: err.toString() });
-  }
-};
 
 /**
  * Fucntion to take a query param to a Uint8Array
