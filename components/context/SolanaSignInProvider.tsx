@@ -29,9 +29,10 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
   const [isAuthenticated, setAuthed] = useState<boolean>(false);
   const [data, setData] = useState<Record<string, string>>({});
 
-  const check = async () => {
-    return !!(await getAuth().currentUser);
-  };
+  // connect to the wallet if it's ready
+  useEffect(() => {
+    if (ready) connect();
+  }, [ready, connect]);
 
   const authenticate = useCallback(async () => {
     try {
@@ -77,6 +78,8 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
     setAuthed(false);
   };
 
+  let walletNotSelected = !wallet || !ready;
+
   return (
     <SolanaAuthContext.Provider
       value={{
@@ -87,6 +90,7 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
         connect,
         wallet,
         signout,
+        walletNotSelected,
       }}
     >
       <WalletModalProvider>{children}</WalletModalProvider>

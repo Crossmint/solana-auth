@@ -11,6 +11,7 @@ export interface SolanaAuthState {
   connect(): Promise<void>;
   signout(): Promise<void>;
   wallet: Wallet | null;
+  walletNotSelected: boolean;
 }
 
 export const SolanaAuthContext = createContext<SolanaAuthState>(

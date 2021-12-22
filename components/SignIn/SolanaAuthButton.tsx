@@ -3,14 +3,16 @@ import { useCallback, useEffect, useState } from "react";
 import { WalletConnectButtons } from "../Wallet/WalletConnectButtons";
 import { useSolanaSignIn } from "../context/useSolanaSignIn";
 import Image from "next/image";
+import {
+  WalletConnectButton,
+  WalletMultiButton,
+} from "@solana/wallet-adapter-react-ui";
 
 export const SignInWithSolana = () => {
-  const { isAuthenticated, authenticate, wallet, connect, signout } =
+  const { isAuthenticated, authenticate, wallet, walletNotSelected, signout } =
     useSolanaSignIn();
   const { ready, connected } = useWallet();
   const [signingIn, setSigningIn] = useState<boolean>(false);
-
-  let walletNeedsConnecting = !wallet || !ready;
 
   const asyncAuth = useCallback(async () => {
     setSigningIn(true);
@@ -21,22 +23,25 @@ export const SignInWithSolana = () => {
   // TODO: These effects could probably be added to signinProvider
   //  or at least they could probably be in the same hook
   useEffect(() => {
-    if (ready) connect();
-  }, [ready, connect]);
-
-  useEffect(() => {
     if (connected && signingIn) {
       asyncAuth();
     }
   }, [connected, asyncAuth, signingIn]);
 
   const SigningInContainer = () => {
+    return <>{walletNotSelected && <WalletConnectButtons />}</>;
+  };
+
+  const UnAuthedContainer = () => {
     return (
       <>
-        {walletNeedsConnecting ? (
-          <WalletConnectButtons />
+        {signingIn ? (
+          <SigningInContainer />
         ) : (
-          <p>Connecting...</p>
+          <button onClick={() => setSigningIn(true)}>
+            {wallet && <Image width={24} height={24} src={wallet.icon} />} Sign
+            in with Solana
+          </button>
         )}
       </>
     );
@@ -44,16 +49,12 @@ export const SignInWithSolana = () => {
 
   return (
     <>
-      {signingIn ? (
-        <SigningInContainer />
-      ) : isAuthenticated ? (
+      {isAuthenticated ? (
         <button onClick={() => signout()}>Sign out!</button>
       ) : (
-        <button onClick={() => setSigningIn(true)}>
-          {wallet && <Image width={24} height={24} src={wallet.icon} />}Sign in
-          with Solana
-        </button>
+        <UnAuthedContainer />
       )}
+      {!walletNotSelected && <WalletMultiButton />}
     </>
   );
 };
