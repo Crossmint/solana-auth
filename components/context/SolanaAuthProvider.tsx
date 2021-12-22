@@ -1,3 +1,4 @@
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import dynamic from "next/dynamic";
 import { FC, ReactNode } from "react";
@@ -31,15 +32,17 @@ export const SolanaAuthProvider: FC<SolanaAuthProviderProps> = ({
 }) => {
   return (
     <WalletConnectionProvider>
-      <SolanaSignInProvider
-        domain="deolate.space"
-        requestUrl="/api/getauthchallenge"
-        callbackUrl="/api/completeauthchallenge"
-        onAuthCallback={callback}
-        signOut={signOut}
-      >
-        {children}
-      </SolanaSignInProvider>
+      <WalletModalProvider>
+        <SolanaSignInProvider
+          domain="deolate.space"
+          requestUrl="/api/getauthchallenge"
+          callbackUrl="/api/completeauthchallenge"
+          onAuthCallback={callback}
+          signOut={signOut}
+        >
+          {children}
+        </SolanaSignInProvider>
+      </WalletModalProvider>
     </WalletConnectionProvider>
   );
 };

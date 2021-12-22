@@ -12,6 +12,7 @@ export interface SolanaAuthState {
   signout(): Promise<void>;
   wallet: Wallet | null;
   walletNotSelected: boolean;
+  openWalletModal(): void;
 }
 
 export const SolanaAuthContext = createContext<SolanaAuthState>(

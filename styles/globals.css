@@ -25,7 +25,16 @@ a {
   background: gainsboro;
   font-size: medium;
   cursor: pointer;
-  
+  margin:  5px 0px;
+}
+
+.solana-auth-btn > div {
+  margin-right: 5px !important
+}
+
+.solana-auth-btn.change-wallet {
+  background: gray;
+  color: white;
 }
 .solana-auth-btn.sign-in:hover {
   background-color: aliceblue;

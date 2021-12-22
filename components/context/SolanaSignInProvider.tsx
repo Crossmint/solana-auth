@@ -1,6 +1,9 @@
 import { async } from "@firebase/util";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
+import {
+  useWalletModal,
+  WalletModalProvider,
+} from "@solana/wallet-adapter-react-ui";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import dynamic from "next/dynamic";
 import { FC, ReactNode, useCallback, useEffect, useState } from "react";
@@ -24,8 +27,16 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
   onAuthCallback,
   signOut,
 }) => {
-  const { publicKey, signMessage, connect, wallet, ready, connected } =
-    useWallet();
+  const {
+    publicKey,
+    signMessage,
+    connect,
+    wallet,
+    ready,
+    connected,
+    disconnect,
+  } = useWallet();
+  const { setVisible } = useWalletModal();
   const [isAuthenticated, setAuthed] = useState<boolean>(false);
   const [data, setData] = useState<Record<string, string>>({});
 
@@ -73,6 +84,10 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
     }
   }, [callbackUrl, domain, onAuthCallback, publicKey, requestUrl, signMessage]);
 
+  const openWalletModal = () => {
+    setVisible(true);
+  };
+
   const signout = async () => {
     await signOut();
     setAuthed(false);
@@ -91,6 +106,7 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
         wallet,
         signout,
         walletNotSelected,
+        openWalletModal,
       }}
     >
       <WalletModalProvider>{children}</WalletModalProvider>

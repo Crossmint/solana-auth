@@ -9,8 +9,15 @@ import {
 } from "@solana/wallet-adapter-react-ui";
 
 export const SignInWithSolana = () => {
-  const { isAuthenticated, authenticate, wallet, walletNotSelected, signout } =
-    useSolanaSignIn();
+  const {
+    isAuthenticated,
+    authenticate,
+    wallet,
+    walletNotSelected,
+    signout,
+    openWalletModal,
+    publicKey,
+  } = useSolanaSignIn();
   const { ready, connected } = useWallet();
   const [signingIn, setSigningIn] = useState<boolean>(false);
 
@@ -43,7 +50,12 @@ export const SignInWithSolana = () => {
             onClick={() => setSigningIn(true)}
           >
             {wallet && <Image width={24} height={24} src={wallet.icon} />} Sign
-            in with Solana
+            in with{" "}
+            {!walletNotSelected
+              ? publicKey?.toString().slice(0, 2) +
+                "..." +
+                publicKey?.toString().slice(publicKey.toString().length - 2)
+              : "Solana"}
           </button>
         )}
       </>
@@ -59,7 +71,14 @@ export const SignInWithSolana = () => {
       ) : (
         <UnAuthedContainer />
       )}
-      {!walletNotSelected && <WalletMultiButton />}
+      {!walletNotSelected && (
+        <button
+          className="solana-auth-btn change-wallet"
+          onClick={() => openWalletModal()}
+        >
+          Change wallet
+        </button>
+      )}
     </>
   );
 };
