@@ -14,3 +14,22 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.solana-auth-btn {
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+  justify-content: space-between;
+  background: gainsboro;
+  font-size: medium;
+  cursor: pointer;
+  
+}
+.solana-auth-btn.sign-in:hover {
+  background-color: aliceblue;
+}
+.solana-auth-btn.sign-out:hover {
+  background-color: rgb(250, 191, 205);
+}

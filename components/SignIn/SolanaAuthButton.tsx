@@ -38,7 +38,10 @@ export const SignInWithSolana = () => {
         {signingIn ? (
           <SigningInContainer />
         ) : (
-          <button onClick={() => setSigningIn(true)}>
+          <button
+            className="solana-auth-btn sign-in"
+            onClick={() => setSigningIn(true)}
+          >
             {wallet && <Image width={24} height={24} src={wallet.icon} />} Sign
             in with Solana
           </button>
@@ -50,7 +53,9 @@ export const SignInWithSolana = () => {
   return (
     <>
       {isAuthenticated ? (
-        <button onClick={() => signout()}>Sign out!</button>
+        <button className="solana-auth-btn sign-out" onClick={() => signout()}>
+          Sign out!
+        </button>
       ) : (
         <UnAuthedContainer />
       )}
