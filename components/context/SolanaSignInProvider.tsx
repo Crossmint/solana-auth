@@ -38,14 +38,11 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
   } = useWallet();
   const { setVisible } = useWalletModal();
   const [isAuthenticated, setAuthed] = useState<boolean>(false);
+  const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
   const [data, setData] = useState<Record<string, string>>({});
 
-  // connect to the wallet if it's ready
-  useEffect(() => {
-    if (ready) connect();
-  }, [ready, connect]);
-
   const authenticate = useCallback(async () => {
+    setIsSigningIn(true);
     try {
       const { nonce } = await fetch(`${requestUrl}?pubkey=${publicKey}`)
         .then((resp) => resp.json())
@@ -78,19 +75,36 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
       const data = await onAuthCallback(callbackData);
       setData(data);
       setAuthed(true);
-      console.log("completed signin!");
+      setIsSigningIn(false);
     } catch (error: any) {
+      setIsSigningIn(false);
       alert(`Signing failed: ${error?.message}`);
     }
   }, [callbackUrl, domain, onAuthCallback, publicKey, requestUrl, signMessage]);
 
-  const openWalletModal = () => {
-    setVisible(true);
-  };
+  // connect to the wallet if it's ready
+  useEffect(() => {
+    if (ready) connect();
+  }, [ready, connect]);
 
-  const signout = async () => {
+  useEffect(() => {
+    if (connected && isSigningIn) {
+      authenticate();
+    }
+  }, [connected, authenticate, isSigningIn]);
+
+  const _signout = async () => {
     await signOut();
     setAuthed(false);
+  };
+
+  const disconnectWallet = async () => {
+    await disconnect();
+    await _signout();
+  };
+
+  const openWalletModal = () => {
+    setVisible(true);
   };
 
   let walletNotSelected = !wallet || !ready;
@@ -99,17 +113,19 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
     <SolanaAuthContext.Provider
       value={{
         isAuthenticated,
-        authenticate,
+        authenticate: () => setIsSigningIn(true),
         data,
         publicKey,
         connect,
         wallet,
-        signout,
+        signout: _signout,
         walletNotSelected,
         openWalletModal,
+        isSigningIn,
+        disconnectWallet,
       }}
     >
-      <WalletModalProvider>{children}</WalletModalProvider>
+      {children}
     </SolanaAuthContext.Provider>
   );
 };

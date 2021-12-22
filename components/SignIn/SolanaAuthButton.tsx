@@ -11,29 +11,18 @@ import {
 export const SignInWithSolana = () => {
   const {
     isAuthenticated,
+    isSigningIn,
     authenticate,
     wallet,
     walletNotSelected,
     signout,
     openWalletModal,
     publicKey,
+    disconnectWallet,
   } = useSolanaSignIn();
-  const { ready, connected } = useWallet();
-  const [signingIn, setSigningIn] = useState<boolean>(false);
-
-  const asyncAuth = useCallback(async () => {
-    setSigningIn(true);
-    await authenticate();
-    setSigningIn(false);
-  }, [authenticate]);
 
   // TODO: These effects could probably be added to signinProvider
   //  or at least they could probably be in the same hook
-  useEffect(() => {
-    if (connected && signingIn) {
-      asyncAuth();
-    }
-  }, [connected, asyncAuth, signingIn]);
 
   const SigningInContainer = () => {
     return <>{walletNotSelected && <WalletConnectButtons />}</>;
@@ -42,12 +31,12 @@ export const SignInWithSolana = () => {
   const UnAuthedContainer = () => {
     return (
       <>
-        {signingIn ? (
+        {isSigningIn ? (
           <SigningInContainer />
         ) : (
           <button
             className="solana-auth-btn sign-in"
-            onClick={() => setSigningIn(true)}
+            onClick={() => authenticate()}
           >
             {wallet && <Image width={24} height={24} src={wallet.icon} />} Sign
             in with{" "}

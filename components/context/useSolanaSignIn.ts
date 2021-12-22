@@ -5,6 +5,7 @@ import { createContext, useCallback, useContext, useState } from "react";
 
 export interface SolanaAuthState {
   isAuthenticated: boolean;
+  isSigningIn: boolean;
   data: Record<string, string>;
   authenticate(): void;
   publicKey: PublicKey | null;
@@ -13,6 +14,7 @@ export interface SolanaAuthState {
   wallet: Wallet | null;
   walletNotSelected: boolean;
   openWalletModal(): void;
+  disconnectWallet(): void;
 }
 
 export const SolanaAuthContext = createContext<SolanaAuthState>(
