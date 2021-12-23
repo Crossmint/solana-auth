@@ -7,12 +7,12 @@ export interface SolanaAuthState {
   isAuthenticated: boolean;
   isSigningIn: boolean;
   data: Record<string, string>;
-  authenticate(): void;
+  // TODO: possibily remove these form the Auth Context
   publicKey: PublicKey | null;
-  connect(): Promise<void>;
-  signout(): Promise<void>;
   wallet: Wallet | null;
   walletNotSelected: boolean;
+  authenticate(): void;
+  signout(): Promise<void>;
   openWalletModal(): void;
   disconnectWallet(): void;
 }

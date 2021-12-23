@@ -116,7 +116,6 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
         authenticate: () => setIsSigningIn(true),
         data,
         publicKey,
-        connect,
         wallet,
         signout: _signout,
         walletNotSelected,
