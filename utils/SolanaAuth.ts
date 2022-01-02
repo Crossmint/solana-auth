@@ -3,56 +3,45 @@ import util from "tweetnacl-util";
 import { sign } from "tweetnacl";
 import { signInMessage } from "../config";
 
-export interface SolanaAuthBase {
+export interface Adapter {
   updateNonce(pubkey: string): Promise<string>;
   createProfile(pubkey: string): Promise<string>;
-  checkNonce(pubkey: string): Promise<string>;
+  checkNonce(pubkey: string): Promise<any>;
   generateToken(pubkey: string): Promise<string>;
   verifyTTL(pubkey: string): Promise<boolean>;
 }
 
-export class SolanaAuth implements SolanaAuthBase {
-  config: SolanaAuthBase = {} as SolanaAuthBase;
-  constructor(config: SolanaAuthBase) {
-    Object.assign(this.config, config);
-  }
-  updateNonce(pubkey: string): Promise<string> {
-    return this.config.updateNonce(pubkey);
-  }
-  createProfile(pubkey: string): Promise<string> {
-    return this.config.createProfile(pubkey);
-  }
-  checkNonce(pubkey: string): Promise<string> {
-    return this.config.checkNonce(pubkey);
-  }
-  generateToken(pubkey: string): Promise<string> {
-    return this.config.generateToken(pubkey);
-  }
-  verifyTTL(pubkey: string): Promise<boolean> {
-    return this.config.verifyTTL(pubkey);
-  }
+interface SolanaAuth {
+  getSolanaAuth: (req: any, res: any) => Promise<void>;
+  completeSolanaAuth: (req: any, res: any) => Promise<void>;
+}
+type SolanaAuthOptions = {
+  adapter: Adapter;
+};
 
-  getNonce = async (pubkey: string) => {
+// TODO: Turn this into a function that can be used as the defualt export on a Next.JS Auth page.
+const SolanaAuth = (options: SolanaAuthOptions): SolanaAuth => {
+  const getNonce = async (pubkey: string) => {
     /**
      * If there is NO nonce, create the user profile with a new nonce
      * if there is a nonce, update it.
      */
 
-    let nonce = await this.checkNonce(pubkey);
+    let nonce = await options.adapter.checkNonce(pubkey);
 
     if (!nonce) {
-      nonce = await this.createProfile(pubkey);
+      nonce = await options.adapter.createProfile(pubkey);
     } else {
-      nonce = await this.updateNonce(pubkey);
+      nonce = await options.adapter.updateNonce(pubkey);
     }
     return nonce;
   };
 
-  getSolanaAuth = async (req: any, res: any) => {
+  const getSolanaAuth = async (req: any, res: any) => {
     // get pubkey form req
     const pubkey = req.query.pubkey;
     if (pubkey) {
-      let nonce = await this.getNonce(pubkey.toString());
+      let nonce = await getNonce(pubkey.toString());
 
       res.status(200).json({ nonce });
     } else {
@@ -60,7 +49,7 @@ export class SolanaAuth implements SolanaAuthBase {
     }
   };
 
-  completeSolanaAuth = async (req: any, res: any) => {
+  const completeSolanaAuth = async (req: any, res: any) => {
     try {
       // parse the query parameters
       let { pubkey, payload, signature } = req.query;
@@ -68,11 +57,11 @@ export class SolanaAuth implements SolanaAuthBase {
       pubkey = pubkey.toString();
 
       // verify the TLL
-      const ttlVerified = this.verifyTTL(pubkey);
+      const ttlVerified = options.adapter.verifyTTL(pubkey);
       if (!ttlVerified) throw new Error("Nonce is expired");
 
       // get the nonce from the database
-      let dbNonce = await this.checkNonce(pubkey);
+      let dbNonce = await options.adapter.checkNonce(pubkey);
       if (!dbNonce) throw new Error("Public Key not in DB");
 
       const { nonce, domain } = parsePayload(payload);
@@ -95,14 +84,18 @@ export class SolanaAuth implements SolanaAuthBase {
         throw new Error("invalid signature");
 
       // TODO: Create the JWT token with Firebase and send to client
-      let token = await this.generateToken(pubkey);
+      let token = await options.adapter.generateToken(pubkey);
       // send the sign in state back to the client
       res.json({ token });
     } catch (err: any) {
       res.status(400).json({ token: undefined, message: err.toString() });
     }
   };
-}
+
+  return { completeSolanaAuth, getSolanaAuth };
+};
+
+export default SolanaAuth;
 
 /**
  * Fucntion to take a query param to a Uint8Array

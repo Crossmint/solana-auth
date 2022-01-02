@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { SolanaFirebaseAuth } from "../../utils/SolanaAuth_Firebase";
+import SolanaFirebaseAuth from "../../utils/SolanaFirebaseAuth";
 
 type AuthResponse = {
   token: string | undefined;
