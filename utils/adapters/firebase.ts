@@ -17,7 +17,7 @@ export const FirebaseAdapter = (firebase: FirebaseApp): Adapter => {
   const db = getFirestore(firebase);
 
   return {
-    checkNonce: async (pubkey: string) => {
+    getNonce: async (pubkey: string) => {
       const docRef = db.doc(`profiles/${pubkey}`);
       const doc = await docRef.get();
 

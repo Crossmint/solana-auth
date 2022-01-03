@@ -6,7 +6,7 @@ import { signInMessage } from "../config";
 export interface Adapter {
   updateNonce(pubkey: string): Promise<string>;
   createProfile(pubkey: string): Promise<string>;
-  checkNonce(pubkey: string): Promise<any>;
+  getNonce(pubkey: string): Promise<any>;
   generateToken(pubkey: string): Promise<string>;
   verifyTTL(pubkey: string): Promise<boolean>;
 }
@@ -27,7 +27,7 @@ const SolanaAuth = (options: SolanaAuthOptions): SolanaAuth => {
      * if there is a nonce, update it.
      */
 
-    let nonce = await options.adapter.checkNonce(pubkey);
+    let nonce = await options.adapter.getNonce(pubkey);
 
     if (!nonce) {
       nonce = await options.adapter.createProfile(pubkey);
@@ -61,7 +61,7 @@ const SolanaAuth = (options: SolanaAuthOptions): SolanaAuth => {
       if (!ttlVerified) throw new Error("Nonce is expired");
 
       // get the nonce from the database
-      let dbNonce = await options.adapter.checkNonce(pubkey);
+      let dbNonce = await options.adapter.getNonce(pubkey);
       if (!dbNonce) throw new Error("Public Key not in DB");
 
       const { nonce, domain } = parsePayload(payload);
