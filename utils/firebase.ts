@@ -1,8 +1,5 @@
 import { cert, getApps, initializeApp } from "firebase-admin/app";
 import { FIRESTORE_CLIENT_EMAIL, FIRESTORE_PRIVATE_KEY } from "../keys";
-import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
-import SolanaAuth from "./SolanaAuth";
 
 let firebaseApp = getApps()[0];
 

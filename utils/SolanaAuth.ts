@@ -71,7 +71,6 @@ const SolanaAuth = (options: SolanaAuthOptions): SolanaAuth => {
 
       if (constructedMessage !== payload) throw new Error("Invalid payload");
 
-      // TODO: verify the domain (dynamically)
       // check nonce against nonce in db
       if (nonce !== dbNonce) throw new Error("Nonce is invalid");
 
@@ -83,7 +82,6 @@ const SolanaAuth = (options: SolanaAuthOptions): SolanaAuth => {
       if (!sign.detached.verify(payload, signature, publicKey))
         throw new Error("invalid signature");
 
-      // TODO: Create the JWT token with Firebase and send to client
       let token = await options.adapter.generateToken(pubkey);
       // send the sign in state back to the client
       res.json({ token });
