@@ -1,11 +1,8 @@
 import { App as FirebaseApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
-import { randomBytes, secretbox } from "tweetnacl";
-import SolanaAuth, { Adapter } from "../SolanaAuth";
 
-/** FROM: https://github.com/dchest/tweetnacl-js/wiki/Examples */
-const newNonce = () => randomBytes(secretbox.nonceLength);
+import { Adapter } from "../SolanaAuth";
 
 /**
  * A SolanaAuth Adapter to connect with Firebase using Firestore
@@ -34,25 +31,11 @@ export const FirebaseAdapter = (firebase: FirebaseApp): Adapter => {
       return tll;
     },
 
-    createProfile: async (pubkey: string) => {
-      const docRef = db.doc(`profiles/${pubkey}`);
-      const nonce = newNonce().toString();
-      await docRef.set({
-        pubkey: pubkey, // redundant
-        nonce,
-        ttl: +new Date() + 300000, // now + 5min
-      });
-      return nonce;
-    },
+    saveSigninAttempt: async (attempt) => {
+      const docRef = db.doc(`profiles/${attempt.pubkey}`);
 
-    updateNonce: async (pubkey: string) => {
-      const docRef = db.doc(`profiles/${pubkey}`);
-      const nonce = newNonce().toString();
-      await docRef.set({
-        nonce,
-        ttl: +new Date() + 300000,
-      });
-      return nonce;
+      await docRef.set(attempt);
+      return;
     },
 
     generateToken: (pubkey: string) => {

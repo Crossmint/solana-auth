@@ -2,10 +2,19 @@ import base58 from "bs58";
 import util from "tweetnacl-util";
 import { sign } from "tweetnacl";
 import { signInMessage } from "../config";
+import { randomBytes, secretbox } from "tweetnacl";
+
+/** FROM: https://github.com/dchest/tweetnacl-js/wiki/Examples */
+const newNonce = () => randomBytes(secretbox.nonceLength);
+
+type SignInAttempt = {
+  nonce: string;
+  ttl: number;
+  pubkey: string;
+};
 
 export interface Adapter {
-  updateNonce(pubkey: string): Promise<string>;
-  createProfile(pubkey: string): Promise<string>;
+  saveSigninAttempt(attempt: SignInAttempt): Promise<void>;
   getNonce(pubkey: string): Promise<any>;
   generateToken(pubkey: string): Promise<string>;
   getTLL(pubkey: string): Promise<number>;
@@ -23,17 +32,16 @@ type SolanaAuthOptions = {
 const SolanaAuth = (options: SolanaAuthOptions): SolanaAuth => {
   const getNonce = async (pubkey: string) => {
     /**
-     * If there is NO nonce, create the user profile with a new nonce
-     * if there is a nonce, update it.
-     */
+ * With current Firebase application, it is not needed to check if the profile exists in the DB.
+ * I the future, we could use a line (below) to check wether the profile exists.  
+  let nonce = await options.adapter.getNonce(pubkey);
+ */
 
-    let nonce = await options.adapter.getNonce(pubkey);
+    // generate an updated nonce
+    let nonce = newNonce().toString();
+    let ttl = +new Date() + 300000;
 
-    if (!nonce) {
-      nonce = await options.adapter.createProfile(pubkey);
-    } else {
-      nonce = await options.adapter.updateNonce(pubkey);
-    }
+    await options.adapter.saveSigninAttempt({ pubkey, nonce, ttl });
     return nonce;
   };
 
