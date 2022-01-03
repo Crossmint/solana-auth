@@ -8,7 +8,7 @@ export interface Adapter {
   createProfile(pubkey: string): Promise<string>;
   getNonce(pubkey: string): Promise<any>;
   generateToken(pubkey: string): Promise<string>;
-  verifyTTL(pubkey: string): Promise<boolean>;
+  getTLL(pubkey: string): Promise<number>;
 }
 
 interface SolanaAuth {
@@ -37,6 +37,16 @@ const SolanaAuth = (options: SolanaAuthOptions): SolanaAuth => {
     return nonce;
   };
 
+  const verifyTTL = async (pubkey: string) => {
+    // get the TLL from the adapter
+    let ttl = await options.adapter.getTLL(pubkey);
+
+    if (ttl < +new Date()) {
+      return false;
+    }
+    return true;
+  };
+
   const getSolanaAuth = async (req: any, res: any) => {
     // get pubkey form req
     const pubkey = req.query.pubkey;
@@ -57,7 +67,7 @@ const SolanaAuth = (options: SolanaAuthOptions): SolanaAuth => {
       pubkey = pubkey.toString();
 
       // verify the TLL
-      const ttlVerified = options.adapter.verifyTTL(pubkey);
+      const ttlVerified = verifyTTL(pubkey);
       if (!ttlVerified) throw new Error("Nonce is expired");
 
       // get the nonce from the database

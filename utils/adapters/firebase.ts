@@ -27,14 +27,11 @@ export const FirebaseAdapter = (firebase: FirebaseApp): Adapter => {
       return undefined;
     },
 
-    verifyTTL: async (pubkey: string) => {
+    getTLL: async (pubkey: string) => {
       const docRef = db.doc(`profiles/${pubkey}`);
       const doc = await docRef.get();
       const tll = doc.data()?.tll;
-      if (tll < +new Date()) {
-        return false;
-      }
-      return true;
+      return tll;
     },
 
     createProfile: async (pubkey: string) => {
