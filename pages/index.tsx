@@ -1,13 +1,9 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import { SignInWithSolana } from "../components/SignIn";
+import SolanaFirebaseAuth from "../components/SolanaFirebaseAuth";
 import styles from "../styles/Home.module.css";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./_app";
 
 const Index: NextPage = () => {
-  const [user, loading, error] = useAuthState(auth);
-
   return (
     <div className={styles.container}>
       <Head>
@@ -17,14 +13,7 @@ const Index: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        {loading ? (
-          <p>Siging in...</p>
-        ) : user ? (
-          <p>Signed in!</p>
-        ) : (
-          <SignInWithSolana />
-        )}
-        {error && <p>Error signing in: {error} </p>}
+        <SolanaFirebaseAuth />
       </main>
     </div>
   );
