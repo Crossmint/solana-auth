@@ -17,9 +17,14 @@ const Index: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        {loading && <p>Signing in...</p>}
+        {loading ? (
+          <p>Siging in...</p>
+        ) : user ? (
+          <p>Signed in!</p>
+        ) : (
+          <SignInWithSolana />
+        )}
         {error && <p>Error signing in: {error} </p>}
-        <SignInWithSolana />
       </main>
     </div>
   );
