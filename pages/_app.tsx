@@ -11,8 +11,8 @@ import { firebaseClient } from "../utils/firebaseClient";
 require("../styles/globals.css");
 require("@solana/wallet-adapter-react-ui/styles.css");
 
-const auth = getAuth(firebaseClient);
-async function callback(data: Record<string, string>) {
+export const auth = getAuth(firebaseClient);
+async function signIn(data: Record<string, string>) {
   const userCredential = await signInWithCustomToken(auth, data.token);
   return userCredential;
 }
@@ -27,7 +27,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
       domain="desolate.space"
       requestUrl="/api/getauthchallenge"
       callbackUrl="/api/completeauthchallenge"
-      onAuthCallback={callback}
+      onAuthCallback={signIn}
       signOut={signOut}
     >
       <Component {...pageProps} />

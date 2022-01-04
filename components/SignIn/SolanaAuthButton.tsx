@@ -1,12 +1,6 @@
-import { useWallet } from "@solana/wallet-adapter-react";
-import { useCallback, useEffect, useState } from "react";
 import { WalletConnectButtons } from "../Wallet/WalletConnectButtons";
 import { useSolanaSignIn } from "../context/useSolanaSignIn";
 import Image from "next/image";
-import {
-  WalletConnectButton,
-  WalletMultiButton,
-} from "@solana/wallet-adapter-react-ui";
 
 export const SignInWithSolana = () => {
   const {
