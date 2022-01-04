@@ -42,3 +42,15 @@ a {
 .solana-auth-btn.sign-out:hover {
   background-color: rgb(250, 191, 205);
 }
+
+.solana-auth.authed {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 5px;
+    justify-content: space-between;
+    background: deepskyblue;
+    font-size: medium;
+    margin: 5px 0px;
+}
