@@ -75,7 +75,7 @@ const SolanaAuth = (options: SolanaAuthOptions): SolanaAuth => {
       pubkey = pubkey.toString();
 
       // verify the TLL
-      const ttlVerified = verifyTTL(pubkey);
+      const ttlVerified = await verifyTTL(pubkey);
       if (!ttlVerified) throw new Error("Nonce is expired");
 
       // get the nonce from the database
