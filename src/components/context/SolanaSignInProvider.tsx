@@ -7,8 +7,8 @@ import {
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import dynamic from "next/dynamic";
 import { FC, ReactNode, useCallback, useEffect, useState } from "react";
-import { signInMessage } from "../../config";
-import { firebaseClient } from "../../utils/firebaseClient";
+import { signInMessage } from "../../../config";
+import { firebaseClient } from "../../../utils/firebaseClient";
 import { SolanaAuthContext, SolanaAuthState } from "./useSolanaSignIn";
 
 export interface SolanaSignInProviderProps {

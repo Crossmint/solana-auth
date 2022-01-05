@@ -1,8 +1,8 @@
 import base58 from "bs58";
 import { sign } from "tweetnacl";
 import util from "tweetnacl-util";
-import { signInMessage } from "../config";
-import { checkNonce, generateToken, verifyTTL } from "../utils/auth";
+import { signInMessage } from "../../config";
+import { checkNonce, generateToken, verifyTTL } from "../../utils/auth";
 
 /**
  * This function completes the authentication

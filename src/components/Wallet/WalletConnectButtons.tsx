@@ -3,7 +3,7 @@ import {
   WalletDisconnectButton,
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
-import styles from "../../styles/Home.module.css";
+import styles from "./Wallet.module.css";
 export const WalletConnectButtons = () => {
   const { publicKey } = useWallet();
 

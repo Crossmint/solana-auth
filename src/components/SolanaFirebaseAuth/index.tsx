@@ -1,5 +1,5 @@
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../utils/firebaseClient";
+import { auth } from "../../../utils/firebaseClient";
 import { SignInWithSolana } from "../SignIn";
 
 /**
