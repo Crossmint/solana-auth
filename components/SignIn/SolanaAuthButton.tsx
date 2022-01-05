@@ -12,7 +12,6 @@ export const SignInWithSolana = () => {
     signout,
     openWalletModal,
     publicKey,
-    disconnectWallet,
   } = useSolanaSignIn();
 
   const pubKeySlice =

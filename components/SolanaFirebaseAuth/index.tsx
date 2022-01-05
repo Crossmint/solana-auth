@@ -1,5 +1,5 @@
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../pages/_app";
+import { auth } from "../../utils/firebaseClient";
 import { SignInWithSolana } from "../SignIn";
 
 /**
@@ -11,7 +11,7 @@ const SolanaFirebaseAuth = () => {
   return (
     <>
       {loading ? (
-        <p>Siging in...</p>
+        <p>Signing in...</p>
       ) : user ? (
         <p>Signed in!</p>
       ) : (
