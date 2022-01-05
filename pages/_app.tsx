@@ -25,8 +25,8 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <SolanaAuthProvider
       domain="desolate.space"
-      requestUrl="/api/auth/getauthchallenge"
-      callbackUrl="/api/auth/completeauthchallenge"
+      requestUrl="/api/solana-auth/getauthchallenge"
+      callbackUrl="/api/solana-auth/completeauthchallenge"
       onAuthCallback={callback}
       signOut={signOut}
     >

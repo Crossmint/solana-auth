@@ -12,7 +12,7 @@ const SolanaNextAuth = (options: SolanaAuthOptions) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     const { solana } = req.query;
 
-    switch (solana[0]) {
+    switch (solana) {
       case "getauthchallenge":
         console.log("getting auth");
         await handler.getSolanaAuth(req, res);
