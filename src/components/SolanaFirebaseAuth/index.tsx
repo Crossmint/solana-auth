@@ -1,6 +1,6 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../utils/firebaseClient";
-import { SolanaAuthButton } from "../SignIn";
+import { SolanaAuthButton } from "../SolanaAuthButton";
 
 /**
  * Component to wrap the SignInWithSolana Buttons

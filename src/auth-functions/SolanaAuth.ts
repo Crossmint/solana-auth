@@ -1,7 +1,7 @@
 import base58 from "bs58";
 import util from "tweetnacl-util";
 import { sign } from "tweetnacl";
-import { signInMessage } from "../config";
+import { signInMessage } from "../../config";
 import { randomBytes, secretbox } from "tweetnacl";
 
 /** FROM: https://github.com/dchest/tweetnacl-js/wiki/Examples */
