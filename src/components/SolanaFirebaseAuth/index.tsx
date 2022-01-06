@@ -1,6 +1,6 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../utils/firebaseClient";
-import { SignInWithSolana } from "../SignIn";
+import { SolanaAuthButton } from "../SignIn";
 
 /**
  * Component to wrap the SignInWithSolana Buttons
@@ -15,7 +15,7 @@ const SolanaFirebaseAuth = () => {
       ) : user ? (
         <p>Signed in!</p>
       ) : (
-        <SignInWithSolana />
+        <SolanaAuthButton />
       )}
       {error && <p>Error signing in: {error} </p>}
     </>
