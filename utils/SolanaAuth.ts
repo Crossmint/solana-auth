@@ -24,7 +24,7 @@ interface SolanaAuth {
   getSolanaAuth: (req: any, res: any) => Promise<void>;
   completeSolanaAuth: (req: any, res: any) => Promise<void>;
 }
-type SolanaAuthOptions = {
+export type SolanaAuthOptions = {
   adapter: Adapter;
 };
 
