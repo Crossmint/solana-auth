@@ -1,12 +1,6 @@
-import { useWallet } from "@solana/wallet-adapter-react";
-import { useCallback, useEffect, useState } from "react";
 import { WalletConnectButtons } from "../Wallet/WalletConnectButtons";
 import { useSolanaSignIn } from "../context/useSolanaSignIn";
 import Image from "next/image";
-import {
-  WalletConnectButton,
-  WalletMultiButton,
-} from "@solana/wallet-adapter-react-ui";
 
 export const SignInWithSolana = () => {
   const {
@@ -18,11 +12,12 @@ export const SignInWithSolana = () => {
     signout,
     openWalletModal,
     publicKey,
-    disconnectWallet,
   } = useSolanaSignIn();
 
-  // TODO: These effects could probably be added to signinProvider
-  //  or at least they could probably be in the same hook
+  const pubKeySlice =
+    publicKey?.toString().slice(0, 2) +
+    "..." +
+    publicKey?.toString().slice(publicKey.toString().length - 2);
 
   const SigningInContainer = () => {
     return <>{walletNotSelected && <WalletConnectButtons />}</>;
@@ -34,18 +29,22 @@ export const SignInWithSolana = () => {
         {isSigningIn ? (
           <SigningInContainer />
         ) : (
-          <button
-            className="solana-auth-btn sign-in"
-            onClick={() => authenticate()}
-          >
-            {wallet && <Image width={24} height={24} src={wallet.icon} />} Sign
-            in with{" "}
-            {!walletNotSelected
-              ? publicKey?.toString().slice(0, 2) +
-                "..." +
-                publicKey?.toString().slice(publicKey.toString().length - 2)
-              : "Solana"}
-          </button>
+          <>
+            <button
+              className="solana-auth-btn sign-in"
+              onClick={() => authenticate()}
+            >
+              {wallet && <Image width={24} height={24} src={wallet.icon} />}{" "}
+              Sign in with {!walletNotSelected ? pubKeySlice : "Solana"}
+            </button>
+
+            <button
+              className="solana-auth-btn change-wallet"
+              onClick={() => openWalletModal()}
+            >
+              Change wallet
+            </button>
+          </>
         )}
       </>
     );
@@ -54,19 +53,19 @@ export const SignInWithSolana = () => {
   return (
     <>
       {isAuthenticated ? (
-        <button className="solana-auth-btn sign-out" onClick={() => signout()}>
-          Sign out!
-        </button>
+        <>
+          <div className="solana-auth authed">
+            {`Signed in with ${pubKeySlice}`}
+          </div>
+          <button
+            className="solana-auth-btn sign-out"
+            onClick={() => signout()}
+          >
+            Sign out!
+          </button>
+        </>
       ) : (
         <UnAuthedContainer />
-      )}
-      {!walletNotSelected && (
-        <button
-          className="solana-auth-btn change-wallet"
-          onClick={() => openWalletModal()}
-        >
-          Change wallet
-        </button>
       )}
     </>
   );

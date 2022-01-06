@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import { SignInWithSolana } from "../components/SignIn";
+import SolanaFirebaseAuth from "../components/SolanaFirebaseAuth";
 import styles from "../styles/Home.module.css";
 
 const Index: NextPage = () => {
@@ -13,7 +13,7 @@ const Index: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <SignInWithSolana />
+        <SolanaFirebaseAuth />
       </main>
     </div>
   );
