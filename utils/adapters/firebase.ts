@@ -15,7 +15,7 @@ export const FirebaseAdapter = (firebase: FirebaseApp): Adapter => {
 
   return {
     getNonce: async (pubkey: string) => {
-      const docRef = db.doc(`signinattemps/${pubkey}`);
+      const docRef = db.doc(`signinattempts/${pubkey}`);
       const doc = await docRef.get();
 
       if (doc.exists) {
@@ -25,14 +25,14 @@ export const FirebaseAdapter = (firebase: FirebaseApp): Adapter => {
     },
 
     getTLL: async (pubkey: string) => {
-      const docRef = db.doc(`signinattemps/${pubkey}`);
+      const docRef = db.doc(`signinattempts/${pubkey}`);
       const doc = await docRef.get();
       const tll = doc.data()?.tll;
       return tll;
     },
 
     saveSigninAttempt: async (attempt) => {
-      const docRef = db.doc(`signinattemps/${attempt.pubkey}`);
+      const docRef = db.doc(`signinattempts/${attempt.pubkey}`);
 
       await docRef.set(attempt);
       return;
