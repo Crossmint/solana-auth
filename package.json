@@ -1,5 +1,5 @@
 {
-  "name": "sol-auth",
+  "name": "@crossmint/sol-auth",
   "version": "0.1.0",
   "author": "Paella Labs Inc",
   "license": "Apache-2.0",
