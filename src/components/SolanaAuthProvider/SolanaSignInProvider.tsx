@@ -1,15 +1,9 @@
-import { async } from "@firebase/util";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import {
-  useWalletModal,
-  WalletModalProvider,
-} from "@solana/wallet-adapter-react-ui";
-import { getAuth, signInWithCustomToken } from "firebase/auth";
-import dynamic from "next/dynamic";
+import React from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { FC, ReactNode, useCallback, useEffect, useState } from "react";
 import { signInMessage } from "../../../config";
-import { firebaseClient } from "../../../utils/firebaseClient";
-import { SolanaAuthContext, SolanaAuthState } from "../useSolanaSignIn";
+import { SolanaAuthContext } from "../useSolanaSignIn";
 
 export interface SolanaSignInProviderProps {
   requestUrl: string;
