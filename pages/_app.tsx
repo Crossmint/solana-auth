@@ -1,6 +1,6 @@
 import { AppProps } from "next/app";
 import { FC } from "react";
-import { SolanaAuthProvider } from "../components/context/SolanaAuthProvider";
+import { SolanaAuthProvider } from "../src";
 import { signIn, signOut } from "../utils/firebaseClient";
 
 // Use require instead of import, and order matters

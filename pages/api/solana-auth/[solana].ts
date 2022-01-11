@@ -1,5 +1,5 @@
-import { FirebaseAdapter } from "../../../utils/adapters/firebase";
+import { FirebaseAdapter } from "../../../src/auth-functions/adapters/firebase";
+import SolanaNextAuth from "../../../src/auth-functions/SolanaNextAuth";
 import firebaseApp from "../../../utils/firebase";
-import SolanaNextAuth from "../../../utils/SolanaNextAuth";
 
 export default SolanaNextAuth({ adapter: FirebaseAdapter(firebaseApp) });

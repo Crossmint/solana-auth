@@ -1,8 +1,8 @@
 import { WalletConnectButtons } from "../Wallet/WalletConnectButtons";
-import { useSolanaSignIn } from "../context/useSolanaSignIn";
+import { useSolanaSignIn } from "../useSolanaSignIn";
 import Image from "next/image";
 
-export const SignInWithSolana = () => {
+export const SolanaAuthButton = () => {
   const {
     isAuthenticated,
     isSigningIn,
