@@ -1,3 +1,4 @@
+import React from "react";
 import { Wallet } from "@solana/wallet-adapter-base";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";

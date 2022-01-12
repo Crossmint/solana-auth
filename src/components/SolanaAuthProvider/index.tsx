@@ -1,8 +1,7 @@
+import React from "react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import { getAuth, signInWithCustomToken } from "firebase/auth";
 import dynamic from "next/dynamic";
 import { FC, ReactNode } from "react";
-import { firebaseClient } from "../../../utils/firebaseClient";
 import { SolanaSignInProvider } from "./SolanaSignInProvider";
 
 interface SolanaAuthProviderProps {

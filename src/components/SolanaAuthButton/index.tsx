@@ -1,6 +1,6 @@
+import React from "react";
 import { WalletConnectButtons } from "../Wallet/WalletConnectButtons";
 import { useSolanaSignIn } from "../useSolanaSignIn";
-import Image from "next/image";
 
 export const SolanaAuthButton = () => {
   const {
@@ -34,8 +34,8 @@ export const SolanaAuthButton = () => {
               className="solana-auth-btn sign-in"
               onClick={() => authenticate()}
             >
-              {wallet && <Image width={24} height={24} src={wallet.icon} />}{" "}
-              Sign in with {!walletNotSelected ? pubKeySlice : "Solana"}
+              {wallet && <img width={24} height={24} src={wallet.icon} />} Sign
+              in with {!walletNotSelected ? pubKeySlice : "Solana"}
             </button>
 
             <button
