@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import SolanaFirebaseAuth from "../src/components/SolanaFirebaseAuth";
+import SolanaFirebaseAuth from "../../../src/components/SolanaFirebaseAuth";
 
 const Index: NextPage = () => {
   return (
