@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import SolanaFirebaseAuth from "../../src/auth-functions/firebase/SolanaFirebaseAuth";
+import SolanaFirebaseAuth from "../../../../src/auth-functions/firebase/SolanaFirebaseAuth";
 /**
  * Fucntion to take a public key from the client and return an auth challenge
  * @param {*} req
