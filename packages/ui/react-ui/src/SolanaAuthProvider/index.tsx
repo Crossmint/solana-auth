@@ -1,8 +1,8 @@
 import React from "react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import dynamic from "next/dynamic";
 import { FC, ReactNode } from "react";
 import { SolanaSignInProvider } from "./SolanaSignInProvider";
+import { WalletConnectionProvider } from "../Wallet/WalletConnectionProvider";
 
 interface SolanaAuthProviderProps {
   requestUrl: string;
@@ -13,15 +13,6 @@ interface SolanaAuthProviderProps {
   signOut(): Promise<void>;
 }
 
-const WalletConnectionProvider = dynamic<{ children: ReactNode }>(
-  () =>
-    import("../Wallet/WalletConnectionProvider").then(
-      ({ WalletConnectionProvider }) => WalletConnectionProvider
-    ),
-  {
-    ssr: false,
-  }
-);
 export const SolanaAuthProvider: FC<SolanaAuthProviderProps> = ({
   children,
   ...props

@@ -13,6 +13,10 @@
     "import": "./lib/esm/index.js",
     "require": "./lib/cjs/index.js"
   },
+  "private": "true",
+  "workspaces": [
+    "packages/*/*"
+  ],
   "files": [
     "LICENSE",
     "lib",
@@ -22,9 +26,8 @@
     "access": "restricted"
   },
   "scripts": {
-    "clean": "shx rm -rf lib/*",
-    "build": "yarn clean && tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
-    "postbuild": "echo '{\"type\":\"commonjs\"}' | npx json > lib/cjs/package.json && echo '{\"type\":\"module\"}' | npx json > lib/esm/package.json"
+    "clean": "npx lerna run clean",
+    "build": "yarn clean && lerna run build --ignore=@crossmint/solana-auth-nextjs-starter"
   },
   "dependencies": {
     "@solana/wallet-adapter-base": "^0.8.1",

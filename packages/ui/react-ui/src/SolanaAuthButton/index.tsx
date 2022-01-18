@@ -34,8 +34,10 @@ export const SolanaAuthButton = () => {
               className="solana-auth-btn sign-in"
               onClick={() => authenticate()}
             >
-              {wallet && <img width={24} height={24} src={wallet.icon} />} Sign
-              in with {!walletNotSelected ? pubKeySlice : "Solana"}
+              {wallet && (
+                <img width={24} height={24} src={wallet.adapter.icon} />
+              )}{" "}
+              Sign in with {!walletNotSelected ? pubKeySlice : "Solana"}
             </button>
 
             <button

@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import SolanaFirebaseAuth from "../../../src/components/SolanaFirebaseAuth";
-
+import { SolanaAuthButtonFirebase } from "@crossmint/solana-auth-react-ui";
+import { auth } from "../utils/firebaseClient";
 const Index: NextPage = () => {
   return (
     <div>
@@ -12,7 +12,7 @@ const Index: NextPage = () => {
       </Head>
 
       <main>
-        <SolanaFirebaseAuth />
+        <SolanaAuthButtonFirebase auth={auth} />
       </main>
     </div>
   );

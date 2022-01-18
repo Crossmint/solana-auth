@@ -25,11 +25,11 @@ a {
   background: gainsboro;
   font-size: medium;
   cursor: pointer;
-  margin:  5px 0px;
+  margin: 5px 0px;
 }
 
 .solana-auth-btn > div {
-  margin-right: 5px !important
+  margin-right: 5px !important;
 }
 
 .solana-auth-btn.change-wallet {
@@ -44,13 +44,13 @@ a {
 }
 
 .solana-auth.authed {
-    padding: 10px 15px;
-    display: flex;
-    align-items: center;
-    border: none;
-    border-radius: 5px;
-    justify-content: space-between;
-    background: deepskyblue;
-    font-size: medium;
-    margin: 5px 0px;
+  padding: 10px 15px;
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+  justify-content: space-between;
+  background: deepskyblue;
+  font-size: medium;
+  margin: 5px 0px;
 }

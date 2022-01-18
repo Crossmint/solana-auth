@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import SolanaAuth, { SolanaAuthOptions } from "./SolanaAuth";
+import { SolanaAuth, SolanaAuthOptions } from "./SolanaAuth";
 
 /**
  * This function should be used on a catch-all Next API route
  * It's a wrapper for the SolanaAuth Constructor
- * /api/auth/[...solanaAuth].ts
+ * /api/auth/[...solana].ts
  */
-const SolanaNextAuth = (options: SolanaAuthOptions) => {
+export const SolanaNextAuth = (options: SolanaAuthOptions) => {
   let handler = SolanaAuth(options);
 
   return async (req: NextApiRequest, res: NextApiResponse) => {
@@ -14,11 +14,9 @@ const SolanaNextAuth = (options: SolanaAuthOptions) => {
 
     switch (solana) {
       case "getauthchallenge":
-        console.log("getting auth");
         await handler.getSolanaAuth(req, res);
         break;
       case "completeauthchallenge":
-        console.log("completing");
         await handler.completeSolanaAuth(req, res);
         break;
       default:
@@ -26,5 +24,3 @@ const SolanaNextAuth = (options: SolanaAuthOptions) => {
     }
   };
 };
-
-export default SolanaNextAuth;

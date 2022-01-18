@@ -2,8 +2,12 @@ import React from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { FC, ReactNode, useCallback, useEffect, useState } from "react";
-import { signInMessage } from "../../../config";
 import { SolanaAuthContext } from "../useSolanaSignIn";
+import { WalletReadyState } from "@solana/wallet-adapter-base";
+
+const nonceStr = (nonce: string) => `|| id=${nonce}`;
+export const signInMessage = (nonce: string, domain: string) =>
+  "Sign this message to sign into " + domain + nonceStr(nonce);
 
 export interface SolanaSignInProviderProps {
   requestUrl: string;
@@ -21,15 +25,8 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
   onAuthCallback,
   signOut,
 }) => {
-  const {
-    publicKey,
-    signMessage,
-    connect,
-    wallet,
-    ready,
-    connected,
-    disconnect,
-  } = useWallet();
+  const { publicKey, signMessage, connect, wallet, connected, disconnect } =
+    useWallet();
   const { setVisible } = useWalletModal();
   const [isAuthenticated, setAuthed] = useState<boolean>(false);
   const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
@@ -78,8 +75,8 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
 
   // connect to the wallet if it's ready
   useEffect(() => {
-    if (ready) connect();
-  }, [ready, connect]);
+    if (wallet?.readyState == WalletReadyState.Installed) connect();
+  }, [wallet?.readyState, connect]);
 
   useEffect(() => {
     if (connected && isSigningIn) {
@@ -101,7 +98,7 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
     setVisible(true);
   };
 
-  let walletNotSelected = !wallet || !ready;
+  let walletNotSelected = !wallet;
 
   return (
     <SolanaAuthContext.Provider

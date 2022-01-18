@@ -1,8 +1,8 @@
-import base58 from "bs58";
-import util from "tweetnacl-util";
+import * as base58 from "bs58";
+import * as util from "tweetnacl-util";
 import { sign } from "tweetnacl";
-import { signInMessage } from "../../config";
 import { randomBytes, secretbox } from "tweetnacl";
+import { signInMessage } from "../config";
 
 /** FROM: https://github.com/dchest/tweetnacl-js/wiki/Examples */
 const newNonce = () => randomBytes(secretbox.nonceLength);
@@ -20,7 +20,7 @@ export interface Adapter {
   getTLL(pubkey: string): Promise<number>;
 }
 
-interface SolanaAuth {
+export interface SolanaAuthHandler {
   getSolanaAuth: (req: any, res: any) => Promise<void>;
   completeSolanaAuth: (req: any, res: any) => Promise<void>;
 }
@@ -28,15 +28,8 @@ export type SolanaAuthOptions = {
   adapter: Adapter;
 };
 
-// TODO: Turn this into a function that can be used as the defualt export on a Next.JS Auth page.
-const SolanaAuth = (options: SolanaAuthOptions): SolanaAuth => {
+export const SolanaAuth = (options: SolanaAuthOptions): SolanaAuthHandler => {
   const getNonce = async (pubkey: string) => {
-    /**
- * With current Firebase application, it is not needed to check if the profile exists in the DB.
- * I the future, we could use a line (below) to check wether the profile exists.  
-  let nonce = await options.adapter.getNonce(pubkey);
- */
-
     // generate an updated nonce
     let nonce = newNonce().toString();
     let ttl = +new Date() + 300000;
@@ -110,8 +103,6 @@ const SolanaAuth = (options: SolanaAuthOptions): SolanaAuth => {
 
   return { completeSolanaAuth, getSolanaAuth };
 };
-
-export default SolanaAuth;
 
 /**
  * Fucntion to take a query param to a Uint8Array
