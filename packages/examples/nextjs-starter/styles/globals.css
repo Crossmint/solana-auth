@@ -1,0 +1,56 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.solana-auth-btn {
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+  justify-content: space-between;
+  background: gainsboro;
+  font-size: medium;
+  cursor: pointer;
+  margin: 5px 0px;
+}
+
+.solana-auth-btn > div {
+  margin-right: 5px !important;
+}
+
+.solana-auth-btn.change-wallet {
+  background: gray;
+  color: white;
+}
+.solana-auth-btn.sign-in:hover {
+  background-color: aliceblue;
+}
+.solana-auth-btn.sign-out:hover {
+  background-color: rgb(250, 191, 205);
+}
+
+.solana-auth.authed {
+  padding: 10px 15px;
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+  justify-content: space-between;
+  background: deepskyblue;
+  font-size: medium;
+  margin: 5px 0px;
+}

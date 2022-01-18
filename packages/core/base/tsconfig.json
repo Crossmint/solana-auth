@@ -1,0 +1,9 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "lib/esm"
+  },
+  "include": ["src"],
+  "exclude": ["./node_modules"]
+}

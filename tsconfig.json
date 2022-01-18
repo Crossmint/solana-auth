@@ -14,9 +14,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "typeRoots": ["node_modules/@types"],
-    "outDir": "lib/esm",
     "skipLibCheck": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "utils"]
+  "include": ["packages/*/*/src"],
+  "exclude": ["node_modules", "packages/*/*/node_modules"]
 }
