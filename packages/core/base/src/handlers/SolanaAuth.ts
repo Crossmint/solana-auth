@@ -3,6 +3,7 @@ import * as util from "tweetnacl-util";
 import { sign } from "tweetnacl";
 import { randomBytes, secretbox } from "tweetnacl";
 import { signInMessage } from "../config";
+import { AUTH_DOMAIN } from "..";
 
 /** FROM: https://github.com/dchest/tweetnacl-js/wiki/Examples */
 const newNonce = () => randomBytes(secretbox.nonceLength);
@@ -80,9 +81,11 @@ export const SolanaAuth = (options: SolanaAuthOptions): SolanaAuthHandler => {
       // verify the payload
       const constructedMessage = signInMessage(nonce, domain);
 
+      console.log(domain, AUTH_DOMAIN);
+      if (domain !== AUTH_DOMAIN) throw new Error("Domain is invalid");
+
       if (constructedMessage !== payload) throw new Error("Invalid payload");
 
-      // check nonce against nonce in db
       if (nonce !== dbNonce) throw new Error("Nonce is invalid");
 
       payload = util.decodeUTF8(payload);
