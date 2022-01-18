@@ -1,4 +1,4 @@
-# solana-firebase-auth
+# solana-auth
 
 Implement passwordless sign-in to your app using Solana wallets (Phantom, sollet, etc.), so you can authenticate and authorize access within your app based on a Solana address. For example, allow customers to access a protected website only if they're whitelisted or if they possess an NFT of yours.
 
