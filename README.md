@@ -24,6 +24,14 @@ yarn add @crossmint/solana-auth-base@beta  \
          @crossmint/solana-auth-react-ui@beta
 ```
 
+### Configure domain
+
+You will need to define a environment variable to use when checking the payload send from the client. This has to be the same that is passed to `SolanaAuthProvider` on the client.
+
+```sh
+export AUTH_DOMAIN=example.xyz
+```
+
 ## Define auth functions
 
 Define what happens when a user is signed in and signed out by implementing `signIn` and `signOut`.
@@ -58,7 +66,7 @@ require("../styles/globals.css");
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <SolanaAuthProvider
-      domain="example.xyz"
+      authDomain="example.xyz"
       requestUrl="/api/solana-auth/getauthchallenge"
       callbackUrl="/api/solana-auth/completeauthchallenge"
       onAuthCallback={signIn}
