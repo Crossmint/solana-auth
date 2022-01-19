@@ -134,6 +134,26 @@ interface Adapter {
 }
 ```
 
+### Custom Adapter Template
+
+```ts
+const CustomAdapter = (): Adapter => ({
+  saveSigninAttempt(attempt: SignInAttempt): Promise<void> {
+    // TODO: save attempt object into persistent storage. Use the as primary key
+    // and replace any existing entry with the same key
+  },
+  getNonce(pubkey: string): Promise<any> {
+    // TODO: retrieve the nonce of the most recent sign-in attempt for a public key and return the nonce or undefined
+  },
+  generateToken(pubkey: string): Promise<string> {
+    // TODO: create an authentication token for the user and return the token
+  },
+  getTLL(pubkey: string): Promise<number> {
+    // TODO: get the Time To Live from a SignInAttempt from the database
+  },
+});
+```
+
 A custom database adapter can be passed to the `SolanaAuth` constructor like so:
 
 ```js
