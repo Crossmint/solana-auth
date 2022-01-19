@@ -1,14 +1,5 @@
 # `@crossmint/solana-auth`
 
-> Implement passwordless sign-in to your app using Solana wallets (Phantom, sollet, etc.), so you can authenticate and authorize access within your app based on a Solana address. For example, allow customers to access a protected website only if they're whitelisted or if they possess an NFT of yours.
-
-This project has been implemented following best practices for sign-in security (following the OAuth spec) and user experience. It implements persistent sessions using refresh and access tokens, so your customers don't need to sign-in with their wallet each time they visit your site.
-
-It uses Firebase Auth for persistent sessions and user DB as it's free and battle tested by millions of apps, but it's built in a modular way so other auth backends coudl be plugged in.
-
-> **Project status**: this project is functionally complete but not yet nicely packaged with NPM and so on and is lacking docs.
-> We estimate to have that complete by Jan 23rd 202
-
 CrossMint's solana-auth provides developers with the tools to configure their applications to allow users to authenticate with their Solana wallets.
 
 This package currently provides support for Firebase out of the box but allows developers to configure it to work with any backend/database.
@@ -17,7 +8,7 @@ This package currently provides support for Firebase out of the box but allows d
 
 ### Install
 
-```shell
+```sh
 npx create-next-app crossmint-solana-auth --example "https://github.com/crossmint/solana-auth/packages/examples/nextjs-starter"
 
 cd crossmint-solana-auth && yarn install
@@ -30,12 +21,16 @@ yarn dev
 
 ```sh
 yarn add @crossmint/solana-auth-base@beta  \
-         @crossmint/ solana-auth-react-ui@beta
+         @crossmint/solana-auth-react-ui@beta
 ```
 
-Define `signIn` and `signOut`. Here we use firebase utils and `signInWithCustomToken`.
+## Define auth functions
 
-```js
+Define what happens when a user is signed in and signed out by implementing `signIn` and `signOut`.
+
+Here we use those events to handle a session using firebase-auth by using [custom auth](https://firebase.google.com/docs/auth/web/custom-auth).
+
+```ts
 // utils/firebaseClient.ts
 export async function signIn(data: Record<string, string>) {
   const userCredential = await signInWithCustomToken(auth, data.token);
@@ -49,7 +44,7 @@ export const signOut = () => {
 
 Wrap your app in `SolanaAuthProvider`. Make sure to pass it a domain, your auth fucntions, and your serverless endpoints.
 
-```javascript
+```tsx
 // _app.tsx
 import { AppProps } from "next/app";
 import { FC } from "react";
@@ -77,9 +72,9 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
 export default App;
 ```
 
-Use the `SolanaFirebaseAuth` component to render the signin button in your app.
+Use the `SolanaAuthButtonFirebase` component to render the signin button in your app.
 
-```js
+```tsx
 import { SolanaAuthButtonFirebase } from "@crossmint/solana-auth-react-ui";
 import { auth } from "../utils/firebaseClient";
 const Index = () => {
@@ -112,25 +107,23 @@ export default SolanaAuth({ adapter: FirebaseAdapter(firebaseApp) });
 
 This object exposes `getAuthChallenge` and `completeAuthChallenge`. These functions take a request and response like vercel or firebase functions and return `Promise<void>`.
 
-## Client Usage
-
-export default Index;
-
-````
+> **These functions must be used on the api routes defined in above in the `SolanaAuthProvider`**
 
 # Custom Configuration
 
-## Defining an adapter
+## Defining a database adapter
+
+Database adapters are needed in order to store transient log-in attempt information. We provide a built-in adapter for Firebase Firestore, or you can implement your own.
 
 **If you are using Firebase, we have built a database adapter for you, accesible with `@crossmint/solana-auth-base`**
 
-Database adapters must fit the `Adapter` shape
+Database adapters must fit the `Adapter` interface
 
-```js
+```ts
 type SignInAttempt = {
-  nonce: string,
-  ttl: number,
-  pubkey: string,
+  nonce: string;
+  ttl: number;
+  pubkey: string;
 };
 
 interface Adapter {
@@ -139,7 +132,7 @@ interface Adapter {
   generateToken(pubkey: string): Promise<string>;
   getTLL(pubkey: string): Promise<number>;
 }
-````
+```
 
 A custom database adapter can be passed to the `SolanaAuth` constructor like so:
 
