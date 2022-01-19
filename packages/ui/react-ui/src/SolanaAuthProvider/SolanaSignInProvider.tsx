@@ -12,7 +12,7 @@ export const signInMessage = (nonce: string, domain: string) =>
 export interface SolanaSignInProviderProps {
   requestUrl: string;
   callbackUrl: string;
-  domain: string;
+  authDomain: string;
   children: ReactNode;
   onAuthCallback(data: Record<string, string>): Promise<any>;
   signOut(): Promise<void>;
@@ -21,7 +21,7 @@ export const SolanaSignInProvider: FC<SolanaSignInProviderProps> = ({
   children,
   requestUrl,
   callbackUrl,
-  domain,
+  authDomain: domain,
   onAuthCallback,
   signOut,
 }) => {

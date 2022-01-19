@@ -81,7 +81,6 @@ export const SolanaAuth = (options: SolanaAuthOptions): SolanaAuthHandler => {
       // verify the payload
       const constructedMessage = signInMessage(nonce, domain);
 
-      console.log(domain, AUTH_DOMAIN);
       if (domain !== AUTH_DOMAIN) throw new Error("Domain is invalid");
 
       if (constructedMessage !== payload) throw new Error("Invalid payload");

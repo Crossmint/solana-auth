@@ -7,7 +7,7 @@ import { WalletConnectionProvider } from "../Wallet/WalletConnectionProvider";
 interface SolanaAuthProviderProps {
   requestUrl: string;
   callbackUrl: string;
-  domain: string;
+  authDomain: string;
   children: ReactNode;
   onAuthCallback(data: Record<string, string>): Promise<any>;
   signOut(): Promise<void>;

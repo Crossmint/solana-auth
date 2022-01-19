@@ -26,7 +26,10 @@ yarn add @crossmint/solana-auth-base@beta  \
 
 ### Configure domain
 
-You will need to define a environment variable to use when checking the payload send from the client. This has to be the same that is passed to `SolanaAuthProvider` on the client.
+You must configure which domain you're using the auth on in two places:
+
+1. The AUTH_DOMAIN env variable on the server
+2. The authDomain property from SolanaAuthProvider
 
 ```sh
 export AUTH_DOMAIN=example.xyz
