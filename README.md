@@ -24,6 +24,17 @@ yarn add @crossmint/solana-auth-base@beta  \
          @crossmint/solana-auth-react-ui@beta
 ```
 
+### Configure domain
+
+You must configure which domain you're using the auth on in two places:
+
+1. The AUTH_DOMAIN env variable on the server
+2. The authDomain property from SolanaAuthProvider
+
+```sh
+export AUTH_DOMAIN=example.xyz
+```
+
 ## Define auth functions
 
 Define what happens when a user is signed in and signed out by implementing `signIn` and `signOut`.
@@ -58,7 +69,7 @@ require("../styles/globals.css");
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <SolanaAuthProvider
-      domain="example.xyz"
+      authDomain="example.xyz"
       requestUrl="/api/solana-auth/getauthchallenge"
       callbackUrl="/api/solana-auth/completeauthchallenge"
       onAuthCallback={signIn}

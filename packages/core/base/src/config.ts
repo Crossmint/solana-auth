@@ -1,4 +1,4 @@
-export const AUTH_DOMAIN = "desolate.space";
+export const AUTH_DOMAIN = process.env.AUTH_DOMAIN || "";
 
 const nonceStr = (nonce: string) => `|| id=${nonce}`;
 export const signInMessage = (nonce: string, domain: string) =>
