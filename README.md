@@ -3,7 +3,18 @@
 CrossMint's solana-auth provides developers with the tools to configure their applications to allow users to authenticate with their Solana wallets.
 
 This package currently provides support for Firebase out of the box but allows developers to configure it to work with any backend/database.
-
+- [`@crossmint/solana-auth`](#crossmintsolana-auth)
+  - [🚀 Quick Setup (Next.js Example)](#-quick-setup-nextjs-example)
+    - [Install](#install)
+  - [🛠 Setup (React + Firebase)](#-setup-react--firebase)
+  - [Install](#install-1)
+    - [Configure domain](#configure-domain)
+  - [Define auth functions](#define-auth-functions)
+  - [Use the serverless functions.](#use-the-serverless-functions)
+  - [Custom Configuration](#custom-configuration)
+    - [Defining a database adapter](#defining-a-database-adapter)
+    - [Custom Adapter Template](#custom-adapter-template)
+  - [Caveats](#caveats)
 ## 🚀 Quick Setup (Next.js Example)
 
 ### Install
@@ -120,9 +131,9 @@ This object exposes `getAuthChallenge` and `completeAuthChallenge`. These functi
 
 > **These functions must be used on the api routes defined in above in the `SolanaAuthProvider`**
 
-# Custom Configuration
+## Custom Configuration
 
-## Defining a database adapter
+### Defining a database adapter
 
 Database adapters are needed in order to store transient log-in attempt information. We provide a built-in adapter for Firebase Firestore, or you can implement your own.
 
@@ -170,3 +181,7 @@ A custom database adapter can be passed to the `SolanaAuth` constructor like so:
 ```js
 SolanaAuth({ adapter: CustomAdapter() });
 ```
+
+## Caveats 
+1. This package is provided as-is. We have done our best to reduce security vulnerabilities; however, we cannot guarantee that we have complete coverage. 
+2. We **do not** provide support for Ledger wallets. This is due to a problem between Ledger and Solana.
