@@ -14,6 +14,7 @@ This package currently provides support for Firebase out of the box but allows d
   - [Custom Configuration](#custom-configuration)
     - [Defining a database adapter](#defining-a-database-adapter)
     - [Custom Adapter Template](#custom-adapter-template)
+  - [Support](#support)
   - [Caveats](#caveats)
 ## 🚀 Quick Setup (Next.js Example)
 
@@ -181,6 +182,12 @@ A custom database adapter can be passed to the `SolanaAuth` constructor like so:
 ```js
 SolanaAuth({ adapter: CustomAdapter() });
 ```
+## Support 
+If you encounter any issues, please join our Discord!
+
+<a href="https://discord.gg/e8G6rtZkBc">
+<img src="https://www.svgrepo.com/show/353655/discord-icon.svg" width="50" />
+</a>
 
 ## Caveats 
 1. This package is provided as-is. We have done our best to reduce security vulnerabilities; however, we cannot guarantee that we have complete coverage. 
