@@ -1,5 +1,6 @@
 {
   "name": "@crossmint/solana-auth-nextjs-starter",
+  "private": true,
   "version": "0.1.0-alpha.0",
   "scripts": {
     "dev": "next dev",
