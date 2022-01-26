@@ -81,7 +81,8 @@ export const SolanaAuth = (options: SolanaAuthOptions): SolanaAuthHandler => {
       // verify the payload
       const constructedMessage = signInMessage(nonce, domain);
 
-      if (domain !== AUTH_DOMAIN) throw new Error("Domain is invalid");
+      if (domain !== AUTH_DOMAIN)
+        throw new Error("AUTH_DOMAIN does not match domain sent from client");
 
       if (constructedMessage !== payload) throw new Error("Invalid payload");
 
@@ -126,11 +127,13 @@ const qptua = (qp: string | string[]) =>
  */
 const parsePayload = (pl: string): { nonce: string; domain: string } => {
   const nonce = pl.substring(pl.indexOf("id=") + 3);
-  // TODO: Parse the domain and verify that it is correct, else reject
+
   let msg = "Sign this message to sign into ";
-  let domain = pl
-    .substring(pl.indexOf(msg) + msg.length, pl.indexOf("||"))
-    .trim();
+  if (pl.indexOf(msg) !== 0)
+    throw new Error(
+      "Incorrect message format sent from the client. Cannot verify nonce or domain."
+    );
+  let domain = pl.substring(msg.length, pl.indexOf("||")).trim();
 
   return { nonce, domain };
 };
