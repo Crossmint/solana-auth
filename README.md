@@ -194,4 +194,4 @@ If you encounter any issues, please join our Discord!
 
 ## Caveats 
 1. This package is provided as-is. We have done our best to reduce security vulnerabilities; however, we cannot guarantee that we have complete coverage. 
-2. We **do not** provide support for Ledger wallets. This is due to a problem between Ledger and Solana.
+2. This library **does not** yet support Ledger wallets. This is due to an [unresolved issue between Ledger and Solana](https://github.com/solana-labs/solana/issues/21366).
