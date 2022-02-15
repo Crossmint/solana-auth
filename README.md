@@ -22,7 +22,7 @@ This package currently provides support for Firebase out of the box but allows d
 ### Install
 
 ```sh
-npx create-next-app crossmint-solana-auth --example "https://github.com/crossmint/solana-auth/packages/examples/nextjs-starter"
+npx create-next-app crossmint-solana-auth --example "https://github.com/crossmint/solana-auth/tree/main/packages/examples/nextjs-starter"
 
 cd crossmint-solana-auth && yarn install
 yarn dev
