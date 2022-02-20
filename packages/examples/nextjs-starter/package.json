@@ -1,7 +1,7 @@
 {
   "name": "@crossmint/solana-auth-nextjs-starter",
   "private": true,
-  "version": "0.1.2-alpha.0",
+  "version": "0.1.2-alpha.1",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@crossmint/solana-auth-base": "^0.1.2-alpha.0",
-    "@crossmint/solana-auth-react-ui": "^0.1.2-alpha.0",
+    "@crossmint/solana-auth-base": "^0.1.2-alpha.1",
+    "@crossmint/solana-auth-react-ui": "^0.1.2-alpha.1",
     "@solana/wallet-adapter-base": "^0.9.2",
     "@solana/wallet-adapter-react": "^0.15.2",
     "@solana/wallet-adapter-react-ui": "^0.9.4",

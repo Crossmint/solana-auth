@@ -1,6 +1,6 @@
 {
   "name": "@crossmint/solana-auth-react-ui",
-  "version": "0.1.2-alpha.0",
+  "version": "0.1.2-alpha.1",
   "author": "Paella Labs Inc.",
   "license": "Apache-2.0",
   "repository": "https://github.com/Paella-Labs/solana-firebase-auth",
@@ -29,7 +29,7 @@
     "postbuild": "echo '{\"type\":\"commonjs\"}' | npx json > lib/cjs/package.json && echo '{\"type\":\"module\"}' | npx json > lib/esm/package.json"
   },
   "dependencies": {
-    "@crossmint/solana-auth-base": "^0.1.2-alpha.0",
+    "@crossmint/solana-auth-base": "^0.1.2-alpha.1",
     "@solana/wallet-adapter-base": "^0.9.2",
     "@solana/wallet-adapter-react": "^0.15.2",
     "@solana/wallet-adapter-react-ui": "^0.9.4",
