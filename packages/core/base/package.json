@@ -13,6 +13,11 @@
     "import": "./lib/esm/index.js",
     "require": "./lib/cjs/index.js"
   },
+  "files": [
+    "lib",
+    "src",
+    "LICENSE"
+  ],
   "publishConfig": {
     "access": "public"
   },

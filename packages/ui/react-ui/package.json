@@ -9,6 +9,11 @@
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "types": "lib/esm/index.d.ts",
+  "files": [
+    "lib",
+    "src",
+    "LICENSE"
+  ],
   "exports": {
     "import": "./lib/esm/index.js",
     "require": "./lib/cjs/index.js"
