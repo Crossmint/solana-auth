@@ -1,7 +1,6 @@
-import React from "react";
 import { Wallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
-import { createContext, useCallback, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 
 export interface SolanaAuthState {
   isAuthenticated: boolean;
