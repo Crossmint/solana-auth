@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "noEmit": false,
+    "noEmit": true,
     "declaration": true,
     "sourceMap": true,
     "noEmitOnError": true,
