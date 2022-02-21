@@ -1,6 +1,6 @@
 import React from "react";
 import { WalletConnectButtons } from "../Wallet/WalletConnectButtons";
-import { useSolanaSignIn } from "../useSolanaSignIn/index";
+import { useSolanaSignIn } from "../useSolanaSignIn";
 
 export const SolanaAuthButton = () => {
   const {
