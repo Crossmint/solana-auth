@@ -1,4 +1,6 @@
 {
+  "include": ["packages/*/*/src"],
+  "exclude": ["node_modules", "packages/*/*/node_modules"],
   "compilerOptions": {
     "target": "es2019",
     "module": "esnext",
@@ -15,7 +17,5 @@
     "isolatedModules": true,
     "typeRoots": ["node_modules/@types"],
     "skipLibCheck": true
-  },
-  "include": ["packages/*/*/src"],
-  "exclude": ["node_modules", "packages/*/*/node_modules"]
+  }
 }
