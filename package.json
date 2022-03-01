@@ -30,6 +30,7 @@
     "build": "yarn clean && lerna run build --ignore=@crossmint/solana-auth-nextjs-starter"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.5.5",
     "@solana/wallet-adapter-base": "^0.8.1",
     "@solana/wallet-adapter-react": "^0.14.0",
     "@solana/wallet-adapter-react-ui": "^0.7.0",
@@ -42,7 +43,8 @@
     "react-dom": "^17.0.2",
     "react-firebase-hooks": "^4.0.1",
     "tweetnacl": "^1.0.3",
-    "tweetnacl-util": "^0.15.1"
+    "tweetnacl-util": "^0.15.1",
+    "typescript-esm": "^2.0.0"
   },
   "devDependencies": {
     "@types/react": "^17.0.24",
@@ -54,6 +56,7 @@
     "typescript": "^4.4.4"
   },
   "resolutions": {
-    "@types/react": "^17.0.24"
+    "@types/react": "^17.0.24",
+    "@types/node": "14.18.3"
   }
 }

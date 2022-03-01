@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { SolanaAuth, SolanaAuthOptions } from "./SolanaAuth";
 
 /**
@@ -9,7 +8,7 @@ import { SolanaAuth, SolanaAuthOptions } from "./SolanaAuth";
 export const SolanaNextAuth = (options: SolanaAuthOptions) => {
   let handler = SolanaAuth(options);
 
-  return async (req: NextApiRequest, res: NextApiResponse) => {
+  return async (req: any, res: any) => {
     const { solana } = req.query;
 
     switch (solana) {

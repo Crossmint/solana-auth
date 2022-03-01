@@ -29,7 +29,11 @@
     "postbuild": "echo '{\"type\":\"commonjs\"}' | npx json > lib/cjs/package.json && echo '{\"type\":\"module\"}' | npx json > lib/esm/package.json"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.5.5",
     "firebase-admin": "^10.0.2",
     "next": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "14.18.3"
   }
 }
