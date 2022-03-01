@@ -1,6 +1,6 @@
 import { Auth } from "firebase/auth";
 import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import useAuthState from "react-firebase-hooks/auth/dist/auth/useAuthState";
 import { SolanaAuthButton } from "./SolanaAuthButton";
 
 interface SolanaAuthButtonFirebaseProps {
