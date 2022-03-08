@@ -31,6 +31,7 @@ yarn dev
 ## 🛠 Setup (React + Firebase)
 
 ## Install
+**If you are adding to an existing Next.js project, please see [Caveat #3](#caveats)
 
 ```sh
 yarn add @crossmint/solana-auth-base@beta  \
@@ -39,18 +40,27 @@ yarn add @crossmint/solana-auth-base@beta  \
 
 ### Configure domain
 
-You must configure which domain you're using the auth on in two places:
+You must configure which domain you're using with Solana Auth in two places:
 
-1. The AUTH_DOMAIN env variable on the server
-2. The authDomain property from SolanaAuthProvider
-
+1. The AUTH_DOMAIN env variable on the server (in your `.env` file)
 ```sh
-export AUTH_DOMAIN=example.xyz
+#/.env
+AUTH_DOMAIN=example.xyz
 ```
+2. The authDomain property from SolanaAuthProvider
+```js
+ <SolanaAuthProvider
+      authDomain="example.xyz"
+      {...}
+    >
+```
+
 
 ## Define auth functions
 
 Define what happens when a user is signed in and signed out by implementing `signIn` and `signOut`.
+
+You can define this in a util file or in `/pages/_app.tsx` where they are used by the `<SolanaAuthProvider/>`
 
 Here we use those events to handle a session using firebase-auth by using [custom auth](https://firebase.google.com/docs/auth/web/custom-auth).
 
@@ -66,14 +76,13 @@ export const signOut = () => {
 };
 ```
 
-Wrap your app in `SolanaAuthProvider`. Make sure to pass it a domain, your auth fucntions, and your serverless endpoints.
+Wrap your app in `SolanaAuthProvider`. Make sure to pass it a domain, your auth functions (defined above), and your serverless endpoints (defined below).
 
 ```tsx
 // _app.tsx
 import { AppProps } from "next/app";
 import { FC } from "react";
-import { SolanaAuthProvider } from "../src";
-import { signIn, signOut } from "../utils/firebaseClient";
+import { signIn, signOut } from "../utils/firebaseClient"; // DEFINED ABOVE
 
 import { SolanaAuthProvider } from "@crossmint/solana-auth-react-ui";
 
@@ -83,10 +92,11 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <SolanaAuthProvider
       authDomain="example.xyz"
-      requestUrl="/api/solana-auth/getauthchallenge"
-      callbackUrl="/api/solana-auth/completeauthchallenge"
       onAuthCallback={signIn}
       signOut={signOut}
+      {/** DEFINED IN THE NEXT STEP */}
+      requestUrl="/api/solana-auth/getauthchallenge"
+      callbackUrl="/api/solana-auth/completeauthchallenge"
     >
       <Component {...pageProps} />
     </SolanaAuthProvider>
@@ -195,3 +205,13 @@ If you encounter any issues, please join our Discord!
 ## Caveats 
 1. This package is provided as-is. We have done our best to reduce security vulnerabilities; however, we cannot guarantee that we have complete coverage. 
 2. This library **does not** yet support Ledger wallets. This is due to an [unresolved issue between Ledger and Solana](https://github.com/solana-labs/solana/issues/21366).
+3. If you are adding this to an existing Next.js project, you will need to install `next-transpile-modules` and include the following in your `next.config.js`
+
+```js
+const withTM = require("next-transpile-modules")([
+  "@crossmint/solana-auth-react-ui",
+]);
+module.exports = withTM({
+  reactStrictMode: true,
+});
+```
