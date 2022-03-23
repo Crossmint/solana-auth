@@ -6,25 +6,24 @@
   "repository": "https://github.com/Paella-Labs/solana-firebase-auth",
   "type": "module",
   "sideEffects": false,
-  "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
-  "types": "lib/esm/index.d.ts",
+  "main": "lib/index.cjs",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
     "lib",
     "src",
     "LICENSE"
   ],
   "exports": {
-    "import": "./lib/esm/index.js",
-    "require": "./lib/cjs/index.js"
+    "import": "./lib/index.js",
+    "require": "./lib/index.cjs"
   },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "clean": "shx rm -rf lib/*",
-    "build": "yarn clean && tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
-    "postbuild": "echo '{\"type\":\"commonjs\"}' | npx json > lib/cjs/package.json && echo '{\"type\":\"module\"}' | npx json > lib/esm/package.json"
+    "build": "yarn clean && tsup src/index.ts --format esm,cjs --outDir ./lib --dts"
   },
   "dependencies": {
     "@crossmint/solana-auth-base": "^0.1.2-alpha.0",
