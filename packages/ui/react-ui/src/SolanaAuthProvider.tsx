@@ -2,7 +2,7 @@ import React from "react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { FC, ReactNode } from "react";
 import { SolanaSignInProvider } from "./SolanaSignInProvider";
-import { WalletConnectionProvider } from "../Wallet/WalletConnectionProvider";
+import { WalletConnectionProvider } from "./wallet/WalletConnectionProvider";
 
 interface SolanaAuthProviderProps {
   requestUrl: string;

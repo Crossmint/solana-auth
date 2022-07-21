@@ -1,4 +1,4 @@
 import { FirebaseAdapter, SolanaNextAuth } from "@crossmint/solana-auth-base";
-import firebaseApp from "../../../utils/firebase";
+import getFirebaseApp from "../../../utils/firebase";
 
-export default SolanaNextAuth({ adapter: FirebaseAdapter(firebaseApp) });
+export default SolanaNextAuth({ adapter: FirebaseAdapter(getFirebaseApp()) });
