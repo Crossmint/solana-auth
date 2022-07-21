@@ -1,4 +1,4 @@
-export const AUTH_DOMAIN = process.env.AUTH_DOMAIN || "";
+export const AUTH_DOMAIN = process.env.AUTH_DOMAIN || "example.xyz";
 
 const nonceStr = (nonce: string) => `|| id=${nonce}`;
 export const signInMessage = (nonce: string, domain: string) =>

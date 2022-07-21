@@ -1,9 +1,7 @@
 import * as base58 from "bs58";
 import * as util from "tweetnacl-util";
-import { sign } from "tweetnacl";
-import { randomBytes, secretbox } from "tweetnacl";
-import { signInMessage } from "../config";
-import { AUTH_DOMAIN } from "..";
+import { sign , randomBytes, secretbox } from "tweetnacl";
+import { signInMessage, AUTH_DOMAIN } from "./config";
 
 /** FROM: https://github.com/dchest/tweetnacl-js/wiki/Examples */
 const newNonce = () => randomBytes(secretbox.nonceLength);
@@ -82,7 +80,7 @@ export const SolanaAuth = (options: SolanaAuthOptions): SolanaAuthHandler => {
       const constructedMessage = signInMessage(nonce, domain);
 
       if (domain !== AUTH_DOMAIN)
-        throw new Error("AUTH_DOMAIN does not match domain sent from client");
+        throw new Error(`AUTH_DOMAIN does not match domain sent from client`);
 
       if (constructedMessage !== payload) throw new Error("Invalid payload");
 
@@ -92,7 +90,7 @@ export const SolanaAuth = (options: SolanaAuthOptions): SolanaAuthHandler => {
       const publicKey = base58.decode(pubkey);
       signature = qptua(signature);
 
-      // verify that the bytes were signed witht the private key
+      // verify that the bytes were signed with the private key
       if (!sign.detached.verify(payload, signature, publicKey))
         throw new Error("invalid signature");
 

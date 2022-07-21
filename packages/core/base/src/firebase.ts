@@ -2,7 +2,7 @@ import { App as FirebaseApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
-import { Adapter } from "../handlers/SolanaAuth";
+import { Adapter } from "./SolanaAuth";
 
 /**
  * A SolanaAuth Adapter to connect with Firebase using Firestore

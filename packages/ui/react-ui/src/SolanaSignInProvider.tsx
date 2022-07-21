@@ -2,7 +2,7 @@ import React from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { FC, ReactNode, useCallback, useEffect, useState } from "react";
-import { SolanaAuthContext } from "../useSolanaSignIn";
+import { SolanaAuthContext } from "./useSolanaSignIn";
 import { WalletReadyState } from "@solana/wallet-adapter-base";
 
 const nonceStr = (nonce: string) => `|| id=${nonce}`;

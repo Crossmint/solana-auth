@@ -1,7 +1,7 @@
 import { App } from "firebase-admin/app";
-import { SolanaAuth } from "../SolanaAuth";
-import { SolanaNextAuth } from "../SolanaNextAuth";
-import { FirebaseAdapter } from "../../adapters/firebase";
+import { SolanaAuth } from "./SolanaAuth";
+import { SolanaNextAuth } from "./SolanaNextAuth";
+import { FirebaseAdapter } from "./firebase";
 
 export const SolanaFirebaseAuth = (app: App) =>
   SolanaAuth({
